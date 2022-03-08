@@ -1,0 +1,49 @@
+<form [formGroup]="requestAddStation">
+<div style="text-align: center">
+  <mat-form-field appearance="outline">
+    <mat-label> Название станции</mat-label>
+    <input  matInput formControlName="nameStation">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label> Широта</mat-label>
+    <input matInput formControlName="latitude">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label> Долгота</mat-label>
+    <input matInput formControlName="longitude">
+  </mat-form-field>
+</div>
+</form>
+<div style="text-align: center">
+  <mat-form-field appearance="fill">
+    <mat-label> Ближайшая станция</mat-label>
+    <mat-select >
+      <mat-option *ngFor="let name of this.stations1;let i = index" [value]="name.nameStation" (onSelectionChange)="onInput($event)" >     <!-- *ngFor="let food of foods" [value]="food.value"-->
+          {{name.nameStation}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button style="width: 10%" mat-flat-button color="primary" (click)="onClick()">
+    Добавить
+  </button>
+
+  <div *ngIf="canGetStations.length==0" class="index-page">
+<h1>Укажите станции, до которых есть железнождорожное сообщение</h1>
+  </div>
+  <div *ngIf="canGetStations.length!=0" class="index-page">
+    <h1> Пути проложены до станций</h1>
+    <div *ngFor="let name of canGetStations">
+      <div>
+      <h2>{{name}}</h2>
+      </div>
+
+    </div>
+
+  </div>
+  <div>
+    <button  style="width: 15%" mat-flat-button color="primary" (click)="addStation()" [disabled]="requestAddStation.invalid">
+      Добавить станцию
+    </button>
+  </div>
+
+</div>
