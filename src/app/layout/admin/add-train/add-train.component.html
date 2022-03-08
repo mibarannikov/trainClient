@@ -1,0 +1,45 @@
+<h1>добавление поезда</h1>
+
+<div style="text-align: center">
+  <mat-form-field appearance="outline">
+    <mat-label>Номер поезда</mat-label>
+    <input type="text" matInput formControlName="trainNumber">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label> Скорость поезда</mat-label>
+    <input type="text" matInput formControlName="trainSpeed">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label> Количество мест</mat-label>
+    <input type="text" matInput formControlName="seatsSum">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label> Дата старта</mat-label>
+    <input matInput type="datetime-local" placeholder="start date">
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label> Начальная станция</mat-label>
+    <mat-select >
+      <mat-option  >     <!-- *ngFor="let food of foods" [value]="food.value"-->
+
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="datetime-local" placeholder="start date" >
+  </mat-form-field>
+
+
+
+
+
+  <button  style="width: 15%" mat-flat-button color="primary" (click)="onCl()" >
+    Добавить станцию
+  </button>
+
+</div>
+
