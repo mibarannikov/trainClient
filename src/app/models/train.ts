@@ -1,11 +1,13 @@
+import {PointOfSchedule} from "./pointOfSchedule";
+
 export interface Train {
   id?: number;
-  trainNumber: number;
-  startStation: string;
-  stopStation: string;
-  seatCapacity: number;
-  start: string;
-  stop: string;
+  trainNumber: any;
+  departureTime: string;
+  trainSpeed: number;
+  sumSeats: number;
+  amountOfEmptySeats?: number;
+  pointsOfSchedule: PointOfSchedule[];
 
 }
 

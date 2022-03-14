@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import * as http from "http";
+import {Ticket} from "../models/tiсket";
 
 const TICKET_API = 'http://localhost:8080/api/ticket/'
 @Injectable({
@@ -11,12 +11,20 @@ export class TicketService {
 
   constructor(private http:HttpClient) { }
 
-  getTickets(idUser:number): Observable<any>{
-    return this.http.get(TICKET_API)
-  }
+
 
   addTicket(): Observable<any>{
     return this.http.get(TICKET_API);
   }
+
+  getEmptySeatsTrain(trainNumber: any, startStation: string, endStation: string):Observable<any> {
+    return this.http.get(TICKET_API+"searchseats?train="+trainNumber+'&start='+startStation+'&end='+endStation);
+
+  }
+
+  buyTicket(ticket:Ticket): Observable<any> {
+    return this.http.post(TICKET_API + 'buyticket', ticket);
+  }
+
 }
 

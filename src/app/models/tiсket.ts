@@ -1,11 +1,11 @@
-import {Passenger} from "./passenger";
-import {Train} from "./train";
-import {Station} from "./station";
+import {PointOfSchedule} from "./pointOfSchedule";
 
 export interface Ticket{
   id?:number;
-  train:Train;
-  startStation:Station;
-  endStation:Station;
-  passenger:Passenger;
+  seatNumber: number;
+  firstnamePassenger: string;
+  lastnamePassenger: string;
+  dateOfBirth: Date;
+  numberTrainOwner: number;
+  nameStations: PointOfSchedule[];
 }

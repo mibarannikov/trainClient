@@ -1,45 +1,68 @@
-<h1>добавление поезда</h1>
-
 <div style="text-align: center">
-  <mat-form-field appearance="outline">
-    <mat-label>Номер поезда</mat-label>
-    <input type="text" matInput formControlName="trainNumber">
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label> Скорость поезда</mat-label>
-    <input type="text" matInput formControlName="trainSpeed">
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label> Количество мест</mat-label>
-    <input type="text" matInput formControlName="seatsSum">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label> Дата старта</mat-label>
-    <input matInput type="datetime-local" placeholder="start date">
-  </mat-form-field>
+  <h1>Добавление поезда</h1>
 </div>
-<div>
-  <mat-form-field appearance="fill">
-    <mat-label> Начальная станция</mat-label>
-    <mat-select >
-      <mat-option  >     <!-- *ngFor="let food of foods" [value]="food.value"-->
+<form [formGroup]="addTrainForm">
+  <div style="text-align: center">
+    <mat-form-field appearance="outline">
+      <mat-label>Номер поезда</mat-label>
+      <input type="text" matInput formControlName="trainNumber">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label> Скорость поезда</mat-label>
+      <input type="text" matInput formControlName="trainSpeed">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label> Количество мест</mat-label>
+      <input type="text" matInput formControlName="sumSeats">
+    </mat-form-field>
+    <button style="width: 15%" mat-flat-button color="primary" (click)="setNumber()" [disabled] = "addTrainForm.invalid">
+      Установить номер
+    </button>
+    <button style="width: 15%" mat-flat-button color="primary" (click)="cancel()">
+      Отмена
+    </button>
+  </div>
+</form>
 
+
+<div *ngIf="setTrainNumberFlag">
+<h1 style="text-align: center"> Добавьте станции следования</h1>
+  <mat-form-field appearance="outline">
+    <mat-label> Cтанция</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let st of this.stations;let i = index" [value]="st"
+                  (onSelectionChange)="setArrivalStation($event)">
+        {{st}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field>
-    <input matInput type="datetime-local" placeholder="start date" >
-  </mat-form-field>
+  <div>
+    <mat-form-field appearance="outline">
+      <input matInput type="datetime-local" placeholder="Дата отправления" (input)="dateArrival($event)">
+    </mat-form-field>
+  </div>
 
-
-
-
-
-  <button  style="width: 15%" mat-flat-button color="primary" (click)="onCl()" >
+  <button style="width: 15%" mat-flat-button color="primary" (click)="addSchedulePointButton()">
     Добавить станцию
   </button>
 
+  <button style="width: 15%" mat-flat-button color="primary" (click)="createTrain()">
+    Создать поезд
+  </button>
+
+  <div>
+    <hr>
+    <h1> Поезд № {{ this.addTrainForm.value.trainNumber}}</h1>
+  </div>
+  <div>
+    <h1> Станции следования:</h1>
+  </div>
+  <div *ngIf="!emptyPoint">
+    <mat-card  *ngFor="let point of train.pointsOfSchedule">
+      <h2 >{{point.nameStation}}</h2>
+      <h2 >{{point.arrivalTime}}</h2>
+    </mat-card>
+  </div>
 </div>
 

@@ -8,17 +8,28 @@
 .post-card {
   display: block;
   margin: 2rem auto;
-  width: 90%;
+  width: 50%;
   border: black;
-  background: lightgrey;
+  border: solid;
+
 }
+
+.but {
+  display: block;
+  margin: 2rem auto;
+  width: 200px;
+  border: solid;
+  color: black;
+
+}
+
 
 .is-liked {
   color: darkred;
 }
 
 .not-liked {
-  color: grey;
+  color: black;
 }
 section {
   display: table;

@@ -1,15 +1,20 @@
-import { Injectable } from '@angular/core';
-import {Station} from "../models/station";
+import {Injectable} from '@angular/core';
+import {Train} from "../models/train";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrainInfoService {
 
-  trainIdForByTicket:number;
-  adminRole:boolean;
+  public trainIdForByTicket: number;
+  public adminRole: boolean;
+  public trainForTicket: Train;
+  public startForTicket: string;
+  public endForTicket: string;
 
 
-  constructor() { }
+
+  constructor() {
+  }
 
 }

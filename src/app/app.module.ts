@@ -21,7 +21,6 @@ import {ProfileComponent} from './layout/profile/profile.component';
 import {AddstationComponent} from './layout/admin/addstation/addstation.component';
 import {MatSelectModule} from "@angular/material/select";
 import {AddTrainComponent} from './layout/admin/add-train/add-train.component';
-import {MatFormFieldControl} from "@angular/material/form-field";
 import {MatDatetimepickerModule} from "@mat-datetimepicker/core";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {
@@ -30,6 +29,9 @@ import {
   NgxMatTimepickerModule
 } from "@angular-material-components/datetime-picker";
 import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatRadioModule} from "@angular/material/radio";
+import {TrainInfoService} from "./service/train-info.service";
 
 
 @NgModule({
@@ -62,13 +64,15 @@ import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    NgxMatMomentModule
-
-
+    NgxMatMomentModule,
+    MatAutocompleteModule,
+    MatRadioModule
 
 
   ],
-  providers: [authInterceptorProviders],
+  providers: [
+    authInterceptorProviders,
+    TrainInfoService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -15,7 +15,8 @@ export class NavigationComponent implements OnInit {
   isLoggedIn = false;
   isDataLoaded = false;
 
-  user!: User;
+  user!:User;
+  user1!: User;
   date!: string;
 
   constructor(private tokenService: TokenStorageService,
@@ -23,6 +24,7 @@ export class NavigationComponent implements OnInit {
               private router: Router,
               private trainService: TrainService,
               private trainInfo: TrainInfoService) {
+    console.log('constructor navigation')
   }
 
   ngOnInit(): void {
@@ -31,8 +33,9 @@ export class NavigationComponent implements OnInit {
     }, 1000);
 
     this.isLoggedIn = !!this.tokenService.getToken();
-    console.log('залогирован', this.isLoggedIn)
+
     if (this.isLoggedIn) {
+      this.user1=this.tokenService.getUser();
       this.userService.getCurrentUser().subscribe(data => {
         this.user = data;
         console.log('Current user', data)

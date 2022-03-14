@@ -4,6 +4,7 @@ import {AuthService} from "../../service/auth.service";
 import {TokenStorageService} from "../../service/token-storage.service";
 import {NotificationService} from "../../service/notification.service";
 import {Router} from "@angular/router";
+import {UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
               private tokenStorage: TokenStorageService,
               private notificationService: NotificationService,
               private router: Router,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private userService: UserService
   ) {
     this.loginForm = this.createLoginForm()
 
@@ -47,15 +49,20 @@ export class LoginComponent implements OnInit {
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
     }).subscribe(data=>{
-      console.log(data)
       this.tokenStorage.saveToken(data.token);
-      this.tokenStorage.saveUser(data);
+      //this.tokenStorage.saveUser(data);
       this.notificationService.showSnakBar('Successfully logged in');
+      this.userService.getCurrentUser().subscribe(data=>{
+        this.tokenStorage.saveUser(data);
+      });
       this.router.navigate(['/']);
-      window.location.reload()
-    }, error => {
+      window.location.reload();
+      }, error => {
       console.log(error);
       this.notificationService.showSnakBar(error.message);
+
     });
+
+
   }
 }

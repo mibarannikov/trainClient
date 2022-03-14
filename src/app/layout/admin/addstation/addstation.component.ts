@@ -3,6 +3,7 @@ import {AdminService} from "../../../service/admin.service";
 import {Station} from "../../../models/station";
 import {MatOptionSelectionChange} from "@angular/material/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {StationService} from "../../../service/station.service";
 
 @Component({
   selector: 'app-addstation',
@@ -18,16 +19,17 @@ export class AddstationComponent implements OnInit {
   station: Station;
 
   constructor(public adminService: AdminService,
+              public stationService: StationService,
               private fb:FormBuilder) {
   }
 
   ngOnInit(): void {
     this.getStations();
-    this.createRequestAddStationForm();
+    this.requestAddStation = this.createAddStationForm();
   }
 
-  createRequestAddStationForm(): FormGroup {
-    return this.requestAddStation = this.fb.group({
+  createAddStationForm(): FormGroup {
+    return  this.fb.group({
       nameStation: ['', Validators.compose([Validators.required])],
       latitude: [, Validators.compose([Validators.required])],
       longitude: [, Validators.compose([Validators.required])]
@@ -36,8 +38,10 @@ export class AddstationComponent implements OnInit {
 
 
   getStations(): void {
-    this.adminService.getStations().subscribe(data => {
+    console.log("entry")
+    this.stationService.getStations().subscribe(data => {
       this.stations1 = data;
+      console.log('stations',data);
     });
 
   }
@@ -59,14 +63,17 @@ export class AddstationComponent implements OnInit {
   }
 
   addStation() {
+
+
     this.adminService.addStation({
       nameStation: this.requestAddStation.value.nameStation.trim(),
       latitude: this.requestAddStation.value.latitude,
-      longitude:this.requestAddStation.value.latitude,
+      longitude: this.requestAddStation.value.longitude,
       canGetStation:this.canGetStations
     }).subscribe(data=>{
       console.log(data);
-      this.stations1.push(data)});
+      });//this.stations1.push(data)
+    this.getStations();
     this.requestAddStation.reset();
     this.canGetStations = [];
   }
