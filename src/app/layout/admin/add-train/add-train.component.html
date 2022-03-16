@@ -27,34 +27,39 @@
 
 <div *ngIf="setTrainNumberFlag">
   <h1 style="text-align: center"> Добавьте станции следования</h1>
-  <mat-form-field appearance="outline">
-    <mat-label> Cтанция</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let st of this.stationsName;let i = index" [value]="st"
-                  (onSelectionChange)="setArrivalStation($event)">
-        {{st}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div>
+  <div style="text-align: center">
     <mat-form-field appearance="outline">
-      <input matInput type="datetime-local" placeholder="Дата отправления" [value]="this.addArrivalTime"
-             (input)="dateArrival($event)"> <!--  -->
+      <mat-label> Cтанция</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let st of this.stationsName;let i = index" [value]="st"
+                    (onSelectionChange)="setArrivalStation($event)">
+          {{st}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Время прибытия</mat-label>
+      <input matInput type="datetime-local" placeholder="Дата отправления" [value]="this.addArrivalTime"
+             (input)="dateArrival($event)">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Время отправления</mat-label>
+      <input matInput type="datetime-local" placeholder="Дата отправления" [value]="this.addDepartureTime"
+             (input)="dateDeparture($event)">
+    </mat-form-field>
+    <button style="width: 15%"
+            mat-flat-button color="primary"
+            (click)="addSchedulePointButton()"
+            [disabled]="(!!!addArrivalStationName)||(!addDepartureTime)||(!addArrivalTime)">
+      Добавить станцию
+    </button>
+    <button style="width: 15%"
+            mat-flat-button color="primary"
+            (click)="createTrain()"
+            [disabled]="this.train.pointsOfSchedule.length<2">
+      Создать поезд
+    </button>
   </div>
-
-
-  <button style="width: 15%" mat-flat-button color="primary" (click)="addSchedulePointButton()">
-    Добавить станцию
-  </button>
-
-
-  <button style="width: 15%" mat-flat-button color="primary" (click)="createTrain()">
-    Создать поезд
-  </button>
-
-
   <div>
     <hr>
     <h1> Поезд № {{ this.addTrainForm.value.trainNumber}}</h1>
@@ -65,7 +70,8 @@
   <div *ngIf="!emptyPoint">
     <mat-card *ngFor="let point of train.pointsOfSchedule">
       <h2>{{point.nameStation}}</h2>
-      <h2>{{point.arrivalTime}}</h2>
+      <h2>{{point.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</h2>
+      <h2>{{point.departureTime | date:'dd.MM.yyyy HH:mm '}}</h2>
     </mat-card>
   </div>
 </div>

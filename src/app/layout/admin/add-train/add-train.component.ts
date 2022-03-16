@@ -23,6 +23,7 @@ export class AddTrainComponent implements OnInit {
   public train: Train;
   public emptyPoint: boolean;
   public setTrainNumberFlag: boolean;
+  addDepartureTime: any;
 
   constructor(
     private fb: FormBuilder,
@@ -72,9 +73,13 @@ export class AddTrainComponent implements OnInit {
 
   getCanGetStations(name: String): void {
     this.stationService.getStation(name).subscribe(data => {
-      console.log('data', data);
       this.stationsName = data.canGetStation;
-      console.log('массив', this.stationsName);
+      for(let p of this.train.pointsOfSchedule)
+      {
+        if ( this.stationsName.indexOf(p.nameStation)!== -1) {
+          this.stationsName.splice(this.stationsName.indexOf(p.nameStation), 1);
+        }
+      }
     });
 
   }
@@ -96,7 +101,10 @@ export class AddTrainComponent implements OnInit {
           console.log('date for next point', dateOld.setUTCSeconds(dateOld.getUTCSeconds() + time));
           console.log('date for next point', dateOld.setHours(dateOld.getHours() + 3));
           this.addArrivalTime = dateOld.toISOString().replace('Z', '');
-          console.log(this.addArrivalTime)
+          dateOld.setMinutes(dateOld.getMinutes()+5);
+          this.addDepartureTime= dateOld.toISOString().replace('Z','');
+          console.log(this.addArrivalTime);
+          console.log(this.addDepartureTime);
         });
       });
     }
@@ -118,12 +126,13 @@ export class AddTrainComponent implements OnInit {
 
     if (this.addArrivalStationName != '') {
       this.train.pointsOfSchedule.push(
-        {nameStation: this.addArrivalStationName, arrivalTime: this.addArrivalTime});
+        {nameStation: this.addArrivalStationName, arrivalTime: this.addArrivalTime, departureTime:this.addDepartureTime});
       console.log('points', this.train.pointsOfSchedule);
       this.emptyPoint = false;
       console.log('name', this.addArrivalStationName)
       this.getCanGetStations(this.addArrivalStationName);
       this.addArrivalTime='';
+      this.addDepartureTime='';
     }
   }
 
@@ -143,4 +152,11 @@ export class AddTrainComponent implements OnInit {
   }
 
 
+  dateDeparture(event: Event) {
+    this.addDepartureTime = (<HTMLInputElement>event.target).value;
+    console.log(this.addDepartureTime)
+    this.date = new Date(this.addDepartureTime);
+    console.log('getTime', this.date)
+
+  }
 }

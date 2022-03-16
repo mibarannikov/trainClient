@@ -28,6 +28,7 @@ export class IndexComponent implements OnInit {
   dateStartControl = new FormControl('', Validators.required)
   dateEndControl = new FormControl('', Validators.required)
 
+  st:string;
   public arrdep: [{ arr: string | undefined, dep: string | undefined, status: string }]  ;
   nam: string = '';
   label: number = 0;
@@ -118,6 +119,7 @@ export class IndexComponent implements OnInit {
   }
 
   gg() {
+    this.st=this.myControl2.value;
     console.log('in', this.label);
     if (this.label == 1) {
       this.label = 0;
@@ -138,7 +140,7 @@ export class IndexComponent implements OnInit {
     console.log('get');
     this.stationService.getTrainsForSchedule(this.myControl2.value).subscribe(data => {
       this.trainsForSchedule = data;
-      console.log(data)
+      console.log('data',data)
       if(this.trainsForSchedule) {
         for (let tr of this.trainsForSchedule) {
           let arrPoint: PointOfSchedule | undefined = tr.pointsOfSchedule.find(p => p.nameStation === this.myControl2.value);
@@ -162,7 +164,7 @@ export class IndexComponent implements OnInit {
 
 
           // @ts-ignore
-          this.arrdep.push({arr: arrPoint.arrivalTime, dep: datef.toISOString(), status: statuss})
+          this.arrdep.push({arr: arrPoint.arrivalTime, dep: arrPoint.departureTime, status: statuss})
         }
       }
       console.log('массив прибытия отправления',this.arrdep)
@@ -171,6 +173,7 @@ export class IndexComponent implements OnInit {
   }
 
   getSchedule() {
+    this.st=this.myControl2.value;
     this.getTrainsForSchedule();
   }
 }
