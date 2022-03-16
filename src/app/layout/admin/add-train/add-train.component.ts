@@ -15,9 +15,9 @@ import {Router} from "@angular/router";
 export class AddTrainComponent implements OnInit {
 
   public addTrainForm: FormGroup;
-  public st: Station[];
-  public stations: String[];
-  public addArrivalStation: String;
+  public stations: Station[];
+  public stationsName: String[];
+  public addArrivalStationName: String;
   public addArrivalTime: any;
   public date: Date;
   public train: Train;
@@ -33,90 +33,10 @@ export class AddTrainComponent implements OnInit {
 
   }
 
-  ngOnInit()
-    :
-    void {
+  ngOnInit(): void {
     this.addTrainForm = this.createAddTrainForm();
-
     this.setTrainNumberFlag = false;
     this.emptyPoint = true;
-  }
-
-  createAddTrainForm()
-    :
-    FormGroup {
-    return this.fb.group({
-      trainNumber: [123, Validators.compose([Validators.required])],
-      trainSpeed: [40, Validators.compose([Validators.required])],
-      sumSeats: [10, Validators.compose([Validators.required])]
-
-    });
-
-  }
-
-  getStations()
-    :
-    void {
-    this.stationService.getStations().subscribe(data => {
-      this.st = data;
-      this.stations = [];
-      for (let i = 0; i < this.st.length; i++) {
-        this.stations.push(this.st[i].nameStation);
-      }
-    });
-  }
-
-  getCanGetStation(name: String):
-    void {
-    this.stationService.getStation(name).subscribe(data => {
-      console.log('data', data);
-      this.stations = data.canGetStation;
-      console.log('массив', this.stations);
-    });
-
-  }
-
-  setArrivalStation(event: MatOptionSelectionChange<String>) {
-
-    //console.log('event', event);
-    //this.addArrivalStation = '';
-    //console.log('value', event.source.value)
-    this.addArrivalStation = event.source.value;
-    if (this.train.pointsOfSchedule.length > 0) {
-      let pointOld = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].nameStation;
-      let pointNew = this.addArrivalStation;
-      this.stationService.getStation(pointOld).subscribe(data => {
-
-        pointOld = data;
-       // console.log('o',pointOld);
-      });
-      this.stationService.getStation(pointNew).subscribe(data => {
-
-        pointNew = data;
-      //  console.log('n',pointNew)
-      });
-     // console.log('Old',pointOld);
-    //  console.log('New',pointNew);
-    }
-    //console.log(this.addArrivalStation);
-  }
-
-  addSchedulePointButton() {
-    if (this.addArrivalStation != '') {
-      this.train.pointsOfSchedule.push(
-        {nameStation: this.addArrivalStation, arrivalTime: this.addArrivalTime+':00.001'});
-      console.log('points',this.train.pointsOfSchedule);
-      this.emptyPoint = false;
-      console.log('name', this.addArrivalStation)
-      this.getCanGetStation(this.addArrivalStation);
-    }
-
-  }
-
-  dateArrival(event: Event) {
-    this.addArrivalTime = (<HTMLInputElement>event.target).value;
-    this.date = new Date(this.addArrivalTime);
-    console.log(this.date.getTime())
   }
 
   setNumber() {
@@ -125,23 +45,95 @@ export class AddTrainComponent implements OnInit {
       trainNumber: this.addTrainForm.value.trainNumber,
       trainSpeed: this.addTrainForm.value.trainSpeed,
       sumSeats: this.addTrainForm.value.sumSeats,
-      departureTime: '2022-02-03T08:00:00.000',
+      departureTime: '2022-02-03T08:00:00.001',
       pointsOfSchedule: []
     }
-    console.log(this.train);
+    console.log('train установлен',this.train);
     this.setTrainNumberFlag = true;
+  }
+
+  createAddTrainForm(): FormGroup {
+    return this.fb.group({
+      trainNumber: [123, Validators.compose([Validators.required])],
+      trainSpeed: [40, Validators.compose([Validators.required])],
+      sumSeats: [10, Validators.compose([Validators.required])]
+    });
+  }
+
+  getStations(): void {
+    this.stationService.getStations().subscribe(data => {
+      this.stations = data;
+      this.stationsName = [];
+      for (let i = 0; i < this.stations.length; i++) {
+        this.stationsName.push(this.stations[i].nameStation);
+      }
+    });
+  }
+
+  getCanGetStations(name: String): void {
+    this.stationService.getStation(name).subscribe(data => {
+      console.log('data', data);
+      this.stationsName = data.canGetStation;
+      console.log('массив', this.stationsName);
+    });
 
   }
 
+  setArrivalStation(event: MatOptionSelectionChange<String>) {
+    this.addArrivalStationName = event.source.value;
+    if (this.train.pointsOfSchedule.length > 0) {
+      let nameOld = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].nameStation;
+      let stationOld: Station;
+      let stationNew: Station;
+      this.stationService.getStation(nameOld).subscribe(data => {
+        stationOld = data;
+        this.stationService.getStation(event.source.value).subscribe(data => {
+          stationNew = data;
+          let dateOld = new Date(this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime);
+          let distance = Math.sqrt((stationNew.latitude - stationOld.latitude) ** 2 + (stationNew.longitude - stationOld.longitude) ** 2) * 1000;
+          let v = this.train.trainSpeed * 0.2777;
+          let time = distance / v;
+          console.log('date for next point', dateOld.setUTCSeconds(dateOld.getUTCSeconds() + time));
+          console.log('date for next point', dateOld.setHours(dateOld.getHours() + 3));
+          this.addArrivalTime = dateOld.toISOString().replace('Z', '');
+          console.log(this.addArrivalTime)
+        });
+      });
+    }
+  }
+
+  dateArrival(event: Event) {
+    this.addArrivalTime = (<HTMLInputElement>event.target).value;
+    console.log(this.addArrivalTime)
+    this.date = new Date(this.addArrivalTime);
+    console.log('getTime', this.date)
+
+
+      }
+
+  addSchedulePointButton() {
+    if (this.train.pointsOfSchedule.length == 0){
+      this.train.departureTime=this.addArrivalTime;
+    }
+
+    if (this.addArrivalStationName != '') {
+      this.train.pointsOfSchedule.push(
+        {nameStation: this.addArrivalStationName, arrivalTime: this.addArrivalTime});
+      console.log('points', this.train.pointsOfSchedule);
+      this.emptyPoint = false;
+      console.log('name', this.addArrivalStationName)
+      this.getCanGetStations(this.addArrivalStationName);
+      this.addArrivalTime='';
+    }
+  }
+
   createTrain() {
-    console.log('creating train',this.train.pointsOfSchedule)
+    console.log('creating train', this.train.pointsOfSchedule)
     this.adminService.addTrain(this.train).subscribe(data => {
       console.log('created train', data)
     });
     this.addTrainForm.reset();
     this.setTrainNumberFlag = false;
-
-
   }
 
   cancel() {
@@ -149,4 +141,6 @@ export class AddTrainComponent implements OnInit {
     this.addTrainForm.reset();
     this.train.pointsOfSchedule = [];
   }
+
+
 }

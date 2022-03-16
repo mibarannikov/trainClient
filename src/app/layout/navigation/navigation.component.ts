@@ -18,6 +18,7 @@ export class NavigationComponent implements OnInit {
   user!:User;
   user1!: User;
   date!: string;
+  d:Date;
 
   constructor(private tokenService: TokenStorageService,
               private userService: UserService,
@@ -30,7 +31,10 @@ export class NavigationComponent implements OnInit {
   ngOnInit(): void {
     setInterval(() => {
       this.date = Date();
+      this.trainInfo.dateNow = new Date();
     }, 1000);
+
+    this.d= new Date(this.date);
 
     this.isLoggedIn = !!this.tokenService.getToken();
 

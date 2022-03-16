@@ -21,7 +21,13 @@ export class UserService {
 
   }
 
-  getTickets(): Observable<any>{
-    return this.http.get(USER_API+'/tickets')
+  getAllTickets(): Observable<any>{
+    return this.http.get(USER_API+'/tickets?param=all')
   }
+
+  getActualTickets():Observable<any> {
+    return this.http.get(USER_API+'/tickets?param=act')
+  }
+
+
 }

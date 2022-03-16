@@ -15,7 +15,7 @@ export class AddstationComponent implements OnInit {
   requestAddStation!: FormGroup;
   addCanGetStation = '';
   canGetStations: String[] = [];
-  public stations1: Station[];
+  public stations: Station[];
   station: Station;
 
   constructor(public adminService: AdminService,
@@ -40,19 +40,19 @@ export class AddstationComponent implements OnInit {
   getStations(): void {
     console.log("entry")
     this.stationService.getStations().subscribe(data => {
-      this.stations1 = data;
+      this.stations = data;
       console.log('stations',data);
     });
 
   }
 
-  onClick() {
+  addCanGet() {
     console.log('onclik', this.addCanGetStation);
     if(this.addCanGetStation!=''){
-    console.log('lkbyf',this.canGetStations.push(this.addCanGetStation));
+    this.canGetStations.push(this.addCanGetStation);
     console.log(this.addCanGetStation);
     console.log(this.canGetStations);
-    this.stations1 = this.stations1.filter((s)=>{return s.nameStation!=this.addCanGetStation})
+    this.stations = this.stations.filter((s)=>{return s.nameStation!=this.addCanGetStation})
     this.addCanGetStation='';}
   }
 
@@ -63,8 +63,6 @@ export class AddstationComponent implements OnInit {
   }
 
   addStation() {
-
-
     this.adminService.addStation({
       nameStation: this.requestAddStation.value.nameStation.trim(),
       latitude: this.requestAddStation.value.latitude,
@@ -72,8 +70,8 @@ export class AddstationComponent implements OnInit {
       canGetStation:this.canGetStations
     }).subscribe(data=>{
       console.log(data);
-      });//this.stations1.push(data)
-    this.getStations();
+      this.getStations();
+      });
     this.requestAddStation.reset();
     this.canGetStations = [];
   }

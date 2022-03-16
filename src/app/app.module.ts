@@ -32,6 +32,11 @@ import {NgxMatMomentModule} from "@angular-material-components/moment-adapter";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatRadioModule} from "@angular/material/radio";
 import {TrainInfoService} from "./service/train-info.service";
+import { ShowTrainsComponent } from './layout/admin/show-trains/show-trains.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTabsModule} from "@angular/material/tabs";
+import { ShowPassengersComponent } from './layout/admin/show-passengers/show-passengers.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 
 @NgModule({
@@ -45,31 +50,36 @@ import {TrainInfoService} from "./service/train-info.service";
     ProfileComponent,
     AddstationComponent,
     AddTrainComponent,
+    ShowTrainsComponent,
+    ShowPassengersComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatMomentDateModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatDatetimepickerModule,
-    NgxMaterialTimepickerModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
-    NgxMatMomentModule,
-    MatAutocompleteModule,
-    MatRadioModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatDatetimepickerModule,
+        NgxMaterialTimepickerModule,
+        NgxMatDatetimePickerModule,
+        NgxMatTimepickerModule,
+        NgxMatNativeDateModule,
+        NgxMatMomentModule,
+        MatAutocompleteModule,
+        MatRadioModule,
+        MatPaginatorModule,
+        MatTabsModule,
+        MatGridListModule
 
 
-  ],
+    ],
   providers: [
     authInterceptorProviders,
     TrainInfoService],

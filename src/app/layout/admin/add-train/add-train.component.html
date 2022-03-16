@@ -15,7 +15,7 @@
       <mat-label> Количество мест</mat-label>
       <input type="text" matInput formControlName="sumSeats">
     </mat-form-field>
-    <button style="width: 15%" mat-flat-button color="primary" (click)="setNumber()" [disabled] = "addTrainForm.invalid">
+    <button style="width: 15%" mat-flat-button color="primary" (click)="setNumber()" [disabled]="addTrainForm.invalid">
       Установить номер
     </button>
     <button style="width: 15%" mat-flat-button color="primary" (click)="cancel()">
@@ -26,11 +26,11 @@
 
 
 <div *ngIf="setTrainNumberFlag">
-<h1 style="text-align: center"> Добавьте станции следования</h1>
+  <h1 style="text-align: center"> Добавьте станции следования</h1>
   <mat-form-field appearance="outline">
     <mat-label> Cтанция</mat-label>
     <mat-select>
-      <mat-option *ngFor="let st of this.stations;let i = index" [value]="st"
+      <mat-option *ngFor="let st of this.stationsName;let i = index" [value]="st"
                   (onSelectionChange)="setArrivalStation($event)">
         {{st}}
       </mat-option>
@@ -39,17 +39,21 @@
 
   <div>
     <mat-form-field appearance="outline">
-      <input matInput type="datetime-local" placeholder="Дата отправления" (input)="dateArrival($event)">
+      <input matInput type="datetime-local" placeholder="Дата отправления" [value]="this.addArrivalTime"
+             (input)="dateArrival($event)"> <!--  -->
     </mat-form-field>
   </div>
+
 
   <button style="width: 15%" mat-flat-button color="primary" (click)="addSchedulePointButton()">
     Добавить станцию
   </button>
 
+
   <button style="width: 15%" mat-flat-button color="primary" (click)="createTrain()">
     Создать поезд
   </button>
+
 
   <div>
     <hr>
@@ -59,9 +63,9 @@
     <h1> Станции следования:</h1>
   </div>
   <div *ngIf="!emptyPoint">
-    <mat-card  *ngFor="let point of train.pointsOfSchedule">
-      <h2 >{{point.nameStation}}</h2>
-      <h2 >{{point.arrivalTime}}</h2>
+    <mat-card *ngFor="let point of train.pointsOfSchedule">
+      <h2>{{point.nameStation}}</h2>
+      <h2>{{point.arrivalTime}}</h2>
     </mat-card>
   </div>
 </div>

@@ -1,6 +1,6 @@
 export interface Station {
   id?: number;
-  nameStation: String;
+  nameStation: string;
   latitude: number;
   longitude: number;
   canGetStation: String[];

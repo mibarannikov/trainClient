@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ticket} from "../../models/tiсket";
-import {TicketService} from "../../service/ticket.service";
 import {UserService} from "../../service/user.service";
 
 @Component({
@@ -9,18 +8,44 @@ import {UserService} from "../../service/user.service";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
+  ind: number;
   tickets: Ticket[];
-  constructor(private userService: UserService) { }
+  label: number = 0;
+
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit(): void {
     this.getTickets();
   }
 
-  getTickets():void{
-    this.userService.getTickets().subscribe(data=>{
+  getActTickets(): void {
+    this.userService.getActualTickets().subscribe(
+      data => {
+        this.tickets = data;
+        console.log(this.tickets);
+      });
+
+  }
+
+  getTickets(): void {
+    this.userService.getAllTickets().subscribe(data => {
       this.tickets = data;
-      console.log(this.tickets)
+      console.log(this.tickets);
     })
   }
+
+  gg() {
+    console.log('in', this.label);
+    if (this.label == 0) {
+      this.label = 1
+      this.getActTickets();
+    } else {
+      this.label = 0
+      this.getTickets();
+    }
+    console.log('out', this.label)
+  }
+
+
 }

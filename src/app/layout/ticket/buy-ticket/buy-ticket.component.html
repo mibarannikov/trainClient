@@ -17,8 +17,9 @@
       <span appearance="outline" *ngFor="let p of this.ticketPoints">
 
         <span [ngStyle]="{'font-weight':(p.nameStation==this.trainInfo.startForTicket)||(p.nameStation==this.trainInfo.endForTicket)?'bold':'inherit'}">
-          {{p.nameStation}} </span>
-        <span>{{p.arrivalTime}} --></span>
+          {{p.nameStation }} </span>
+        <span>{{p.arrivalTime | date:'dd.MM.yyyy hh:mm'}} --></span>
+
 
       </span>
     </mat-card-subtitle>
@@ -50,7 +51,7 @@
             <input matInput formControlName="lastname">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Choose a date</mat-label>
+            <mat-label>Дата рождения</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>

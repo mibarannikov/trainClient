@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-form-field appearance="outline">
+    <mat-label>Номер поезда</mat-label>
+    <input type="text"
+           placeholder="Pick one"
+           aria-label="Number"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of this.options" [value]="option.trainNumber"
+                  (onSelectionChange)="getTrain($event)">
+        {{option.trainNumber}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button style="width: 10%" mat-flat-button color="primary" (click)="giveTickets()"
+          [disabled]="myControl.invalid" >
+    Показать
+  </button>
+
+</mat-card>
+<div *ngIf="this.train">
+  <mat-card-title>
+    <div>Поезд №:{{this.train.trainNumber}}</div>
+    <mat-card-subtitle>
+      <div>Вместимость:{{this.train.sumSeats}}</div>
+    </mat-card-subtitle>
+  </mat-card-title>
+</div>
+<div *ngIf="tickets; else und">
+  <div *ngIf="tickets.length!=0; else empty">
+    <mat-card class="index-page" *ngFor="let tck of tickets; let i = index">
+      <mat-card-header style="text-align: center">
+
+        <mat-card-title>Пассажир:{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
+        <mat-card-subtitle>Дата рождения:{{tck.dateOfBirth}}</mat-card-subtitle>
+        <mat-card-subtitle> Место№{{tck.seatNumber}}</mat-card-subtitle>
+
+      </mat-card-header>
+
+      <span appearance="outline" *ngFor="let p of tck.nameStations">
+
+        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd/MM/yy   HH:mm '}}
+        --></span>
+
+      </span>
+
+    </mat-card>
+  </div>
+
+  <ng-template style="text-align: center" #empty>
+    <h1 style="text-align: center">нет зарегистрированных пассажиров</h1></ng-template>
+
+
+</div>
+<ng-template #und>
+  <h1 style="text-align: center">выберете поезд</h1>
+</ng-template>

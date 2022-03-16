@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+
 const STATION_API = 'http://localhost:8080/api/station/';
 
 @Injectable({
@@ -21,5 +22,7 @@ export class StationService {
   }
 
 
-
+  getTrainsForSchedule(stationName: string):Observable<any> {
+   return  this.http.get(STATION_API+'stationschedule?station='+stationName)
+  }
 }

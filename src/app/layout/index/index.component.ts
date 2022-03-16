@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {TrainInfoService} from "../../service/train-info.service";
 import {Observable} from "rxjs";
 import {StationService} from "../../service/station.service";
+import {PointOfSchedule} from "../../models/pointOfSchedule";
 
 @Component({
   selector: 'app-index',
@@ -16,7 +17,7 @@ import {StationService} from "../../service/station.service";
 })
 export class IndexComponent implements OnInit {
 
-
+  myControl2 = new FormControl('', Validators.required);
   myControl = new FormControl('', Validators.required);
   options: string[] = [];
   filteredOptions: Observable<string[]>;
@@ -27,10 +28,14 @@ export class IndexComponent implements OnInit {
   dateStartControl = new FormControl('', Validators.required)
   dateEndControl = new FormControl('', Validators.required)
 
+  public arrdep: [{ arr: string | undefined, dep: string | undefined, status: string }]  ;
+  nam: string = '';
+  label: number = 0;
   start: string;
   end: string;
   isTrainLoaded = false;
   trains!: Train[];
+  trainsForSchedule: Train[];
   isPassengerDataLoaded = false;
   passenger!: Passenger;
   requestTrain!: FormGroup;
@@ -39,7 +44,7 @@ export class IndexComponent implements OnInit {
               private notificationService: NotificationService,
               private fb: FormBuilder,
               private router: Router,
-              private trainInfoService: TrainInfoService,
+              public trainInfoService: TrainInfoService,
               private stationService: StationService
   ) {
 
@@ -91,7 +96,7 @@ export class IndexComponent implements OnInit {
     this.trainInfoService.endForTicket = this.end;
     console.log('start', this.trainInfoService.startForTicket);
     console.log('end', this.trainInfoService.endForTicket);
-    console.log( 'train',this.trainInfoService.trainForTicket);
+    console.log('train', this.trainInfoService.trainForTicket);
     this.trainInfoService.trainIdForByTicket = trainId;
     this.router.navigate(['ticket']);
   }
@@ -112,7 +117,60 @@ export class IndexComponent implements OnInit {
       })
   }
 
-  op() {
-    this.options.push("gggggggg");
+  gg() {
+    console.log('in', this.label);
+    if (this.label == 1) {
+      this.label = 0;
+      //  this.getActTickets();
+    } else {
+      console.log('in');
+      this.label = 1;
+      if (this.myControl2.value) {
+        this.getTrainsForSchedule();
+      }
+    }
+    //console.log('out', this.label)
+  }
+
+  private getTrainsForSchedule() {
+   // @ts-ignore
+    this.arrdep=[];
+    console.log('get');
+    this.stationService.getTrainsForSchedule(this.myControl2.value).subscribe(data => {
+      this.trainsForSchedule = data;
+      console.log(data)
+      if(this.trainsForSchedule) {
+        for (let tr of this.trainsForSchedule) {
+          let arrPoint: PointOfSchedule | undefined = tr.pointsOfSchedule.find(p => p.nameStation === this.myControl2.value);
+          console.log(arrPoint)
+          // @ts-ignore
+          let datef: Date = new Date(arrPoint.arrivalTime)
+          console.log('datef', datef)
+          datef.setMinutes(datef.getMinutes() + 5);
+          console.log('detef+5', datef.setHours(datef.getHours() + 3))
+          console.log('ISO', datef.toISOString())
+          // @ts-ignore
+          console.log(this.arrdep)
+          // @ts-ignore
+          let statuss
+          // @ts-ignore
+          if ((new Date(arrPoint.arrivalTime) < new Date()) && (datef > new Date())) {
+            statuss = 'Прибыл';
+          } else {
+            statuss = 'Ожидается прибытие'
+          }
+
+
+          // @ts-ignore
+          this.arrdep.push({arr: arrPoint.arrivalTime, dep: datef.toISOString(), status: statuss})
+        }
+      }
+      console.log('массив прибытия отправления',this.arrdep)
+    })
+
+  }
+
+  getSchedule() {
+    this.getTrainsForSchedule();
   }
 }

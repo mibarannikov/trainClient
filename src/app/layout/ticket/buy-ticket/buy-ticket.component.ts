@@ -6,6 +6,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TicketService} from "../../../service/ticket.service";
 import {Seat} from "../../../models/seat";
 import {PointOfSchedule} from "../../../models/pointOfSchedule";
+import {NotificationService} from "../../../service/notification.service";
+import {Ticket} from "../../../models/tiсket";
 
 
 @Component({
@@ -15,7 +17,8 @@ import {PointOfSchedule} from "../../../models/pointOfSchedule";
 })
 export class BuyTicketComponent implements OnInit {
 
-  changeSeat: number;
+  changeSeat: any;
+  tik: Ticket;
   seats: Seat[] = [];
   train!: Train;
   buyTicket!: FormGroup;
@@ -24,9 +27,8 @@ export class BuyTicketComponent implements OnInit {
   constructor(private trainService: TrainService,
               private fb: FormBuilder,
               public trainInfo: TrainInfoService,
-              private ticketService: TicketService) {
-    console.log('constructor')
-    console.log(trainInfo)
+              private ticketService: TicketService,
+              private notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -54,25 +56,6 @@ export class BuyTicketComponent implements OnInit {
     }
   }
 
-
-  b() {
-    console.log({
-      seatNumber: this.changeSeat,
-      firstnamePassenger: this.buyTicket.value.firstname,
-      lastnamePassenger: this.buyTicket.value.lastname,
-      dateOfBirth: (<Date>this.buyTicket.value.dateOfBirth).toString(),
-      numberTrainOwner: this.trainInfo.trainForTicket.trainNumber,
-      nameStations: this.ticketPoints
-    });
-    this.ticketService.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
-      this.trainInfo.startForTicket,
-      this.trainInfo.endForTicket).subscribe(data => {
-      this.seats = data;
-    });
-    this.buyTicket.reset();
-
-  }
-
   buyingTicket() {
     this.ticketService.buyTicket({
         seatNumber: this.changeSeat,
@@ -84,18 +67,20 @@ export class BuyTicketComponent implements OnInit {
       }
     ).subscribe(data => {
       console.log(data)
+      this.tik = data;
+      if (this.tik.id == 0) {
+        this.notificationService.showSnakBar('Пассажир уже зарегистрирован');
+      }
+      if (this.tik.nameStations[0].nameStation == 'station whose name is oblivion') {
+        this.notificationService.showSnakBar('посадка на поезд окончена');
+      }
       this.ticketService.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
         this.trainInfo.startForTicket,
         this.trainInfo.endForTicket).subscribe(data => {
-        console.log('befor', this.seats)
         this.seats = data;
-        console.log('data', data)
-        console.log('after', this.seats)
       });
-
-
     });
-
+    this.changeSeat='';
     this.buyTicket.reset();
   }
 }

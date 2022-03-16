@@ -1,26 +1,39 @@
 <div>
   <h1 style="margin-left: 10rem"> Мои билеты </h1>
 
-
-  <button (click)="getTickets()">get</button>
 </div>
-<hr>
-<div  *ngIf="this.tickets; else go">
-  <mat-card class="post-card" *ngFor="let ticket of tickets">
-    <mat-card-title>БИЛЕТ</mat-card-title>
-    <hr>
-    <mat-card-title>Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
-    <mat-card-subtitle style="color: black">
-      <h3>
-        <div>Станция отправления: {{ticket.nameStations[0].nameStation}}</div>
-        <div> Время отправления: {{ticket.nameStations[0].arrivalTime}}</div>
-      </h3>
-      <h3>
-        <div>Станция прибытия: {{ticket.nameStations[ticket.nameStations.length-1].nameStation}}</div>
-        <div> Время прибытия: {{ticket.nameStations[ticket.nameStations.length-1].arrivalTime}}</div>
-      </h3>
-    </mat-card-subtitle>
-    <mat-card-subtitle>
+
+<mat-tab-group
+  (selectedIndexChange)="gg()"
+>
+  <mat-tab label="Все билеты">
+    <div *ngIf="this.tickets; else go">
+      <mat-card class="post-card" *ngFor="let ticket of tickets">
+        <mat-card-title>БИЛЕТ</mat-card-title>
+        <hr>
+        <mat-card-title>Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
+        <mat-card-title>Место №{{ticket.seatNumber}}</mat-card-title>
+        <mat-card-subtitle style="color: black">
+          <h3>
+            <div>Станция отправления: {{ticket.nameStations[0].nameStation}}</div>
+            <div> Время отправления: {{ticket.nameStations[0].arrivalTime | date:'dd.MM.yyyy hh:mm'}}</div>
+          </h3>
+          <h3>
+            <div>Станция прибытия: {{ticket.nameStations[ticket.nameStations.length - 1].nameStation}}</div>
+            <div> Время прибытия: {{ticket.nameStations[ticket.nameStations.length - 1].arrivalTime | date:'dd.MM.yyyy hh:mm'}}</div>
+          </h3>
+        </mat-card-subtitle>
+        <mat-card-subtitle style="color: black">
+          <h3>
+
+            <div> Имя: {{ticket.firstnamePassenger}}</div>
+            <div> Фамилия: {{ticket.lastnamePassenger}}</div>
+            <div> Дата рождения: {{ticket.dateOfBirth  | date:'dd.MM.yyyy'}}</div>
+          </h3>
+
+        </mat-card-subtitle>
+
+        <mat-card-subtitle>
       <span appearance="outline" *ngFor="let p of ticket.nameStations">
 
         <span
@@ -29,8 +42,52 @@
         <span>{{p.arrivalTime}} --></span>
 
       </span>
-    </mat-card-subtitle>
-  </mat-card>
-</div>
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
+  </mat-tab>
+  <mat-tab label="Предстоящие поездки">
+    <div *ngIf="this.tickets; else go">
+      <mat-card class="post-card" *ngFor="let ticket of tickets">
+        <mat-card-title>БИЛЕТ</mat-card-title>
+        <hr>
+        <mat-card-title>Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
+        <mat-card-title>Место №{{ticket.seatNumber}}</mat-card-title>
+        <mat-card-subtitle style="color: black">
+          <h3>
+            <div>Станция отправления: {{ticket.nameStations[0].nameStation}}</div>
+            <div> Время отправления: {{ticket.nameStations[0].arrivalTime | date:'dd.MM.yyyy hh:mm'}}</div>
+          </h3>
+          <h3>
+            <div>Станция прибытия: {{ticket.nameStations[ticket.nameStations.length - 1].nameStation}}</div>
+            <div> Время прибытия: {{ticket.nameStations[ticket.nameStations.length - 1].arrivalTime  | date:'dd.MM.yyyy hh:mm'}}</div>
+
+          </h3>
+
+        </mat-card-subtitle>
+        <mat-card-subtitle style="color: black">
+          <h3>
+
+            <div> Имя: {{ticket.firstnamePassenger}}</div>
+            <div> Фамилия: {{ticket.lastnamePassenger}}</div>
+            <div> Дата рождения: {{ticket.dateOfBirth  | date:'dd.MM.yyyy'}}</div>
+          </h3>
+        </mat-card-subtitle>
+
+        <mat-card-subtitle>
+      <span appearance="outline" *ngFor="let p of ticket.nameStations">
+
+        <span
+          [ngStyle]="{'font-weight':(p.nameStation==ticket.nameStations[0].nameStation)||(p.nameStation==ticket.nameStations[ticket.nameStations.length-1].arrivalTime)?'bold':'inherit'}">
+          {{p.nameStation}} </span>
+        <span>{{p.arrivalTime}} --></span>
+
+      </span>
+        </mat-card-subtitle>
+      </mat-card>
+    </div>
+  </mat-tab>
+</mat-tab-group>
 <ng-template #go>
-билетов нет</ng-template>
+  билетов нет
+</ng-template>
