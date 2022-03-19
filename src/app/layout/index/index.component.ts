@@ -32,6 +32,7 @@ export class IndexComponent implements OnInit {
   public arrdep: [{ arr: string | undefined, dep: string | undefined, status: string }]  ;
   nam: string = '';
   label: number = 0;
+  isLoaded:boolean = false;
   start: string;
   end: string;
   isTrainLoaded = false;
@@ -60,6 +61,11 @@ export class IndexComponent implements OnInit {
         this.options.push(s.nameStation);
       }
     });
+    let dt = new Date()
+    dt.setHours(dt.getHours()+3);
+    this.dateStartControl.setValue(dt.toISOString().replace('Z','').split('.')[0]);
+    dt.setMonth(dt.getMonth()+1);
+    this.dateEndControl.setValue(dt.toISOString().replace('Z','').split('.')[0])
     // this.myControl.value.setValue(this.trainInfoService.startForTicket);
     //this.myControl1.value.setValue(this.trainInfoService.endForTicket);
 
@@ -114,7 +120,6 @@ export class IndexComponent implements OnInit {
           t.pointsOfSchedule.sort((a, b) => a.arrivalTime > b.arrivalTime ? 1 : -1);
           console.log('after', t.pointsOfSchedule);
         }
-
       })
   }
 
@@ -123,7 +128,6 @@ export class IndexComponent implements OnInit {
     console.log('in', this.label);
     if (this.label == 1) {
       this.label = 0;
-      //  this.getActTickets();
     } else {
       console.log('in');
       this.label = 1;
@@ -131,11 +135,12 @@ export class IndexComponent implements OnInit {
         this.getTrainsForSchedule();
       }
     }
-    //console.log('out', this.label)
   }
 
   private getTrainsForSchedule() {
-   // @ts-ignore
+
+    this.isLoaded=false;
+    // @ts-ignore
     this.arrdep=[];
     console.log('get');
     this.stationService.getTrainsForSchedule(this.myControl2.value).subscribe(data => {
@@ -168,6 +173,7 @@ export class IndexComponent implements OnInit {
         }
       }
       console.log('массив прибытия отправления',this.arrdep)
+      this.isLoaded = true;
     })
 
   }

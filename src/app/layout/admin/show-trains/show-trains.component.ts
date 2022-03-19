@@ -9,7 +9,8 @@ import {Train} from "../../../models/train";
 })
 export class ShowTrainsComponent implements OnInit {
   public trains: Train[];
-
+  public trainsAct: Train[];
+  label:number;
   constructor(private adminService: AdminService) {
   }
 
@@ -19,4 +20,20 @@ export class ShowTrainsComponent implements OnInit {
     });
   }
 
+  gg() {
+    if (this.label == 1) {
+      this.label = 0;
+      this.adminService.getAllTrains().subscribe(data => {
+        this.trains = data;
+        console.log('all',data)});
+    } else {
+      console.log('act');
+      this.adminService.getAllActTrains().subscribe(data=>{
+        this.trains = data;
+        console.log(data)
+      })
+
+      this.label = 1;
+    }
+  }
 }

@@ -29,7 +29,7 @@
   <h1 style="text-align: center"> Добавьте станции следования</h1>
   <div style="text-align: center">
     <mat-form-field appearance="outline">
-      <mat-label> Cтанция</mat-label>
+      <mat-label> Cтанция </mat-label>
       <mat-select>
         <mat-option *ngFor="let st of this.stationsName;let i = index" [value]="st"
                     (onSelectionChange)="setArrivalStation($event)">

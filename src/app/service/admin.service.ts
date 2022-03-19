@@ -37,4 +37,11 @@ export class AdminService {
     return this.http.get<Ticket[]>(ADMIN_API+'regtickets?train='+trainNumber);
   }
 
+  getAllTickets(trainNumber:number){
+    return this.http.get<Ticket[]>(ADMIN_API+'alltickets?train='+trainNumber);
+  }
+
+  getAllActTrains(): Observable<any> {
+    return this.http.get(ADMIN_API+'train/allact');
+  }
 }

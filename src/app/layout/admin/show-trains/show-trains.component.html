@@ -1,4 +1,4 @@
-<mat-tab-group>
+<mat-tab-group (selectedIndexChange)="gg()">
  <mat-tab label="Все поезда">
 <!--    <mat-paginator [length]="100"-->
 <!--                   [pageSize]="10"-->
@@ -11,14 +11,12 @@
           <mat-card-header style="text-align: center">
             <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title>Поезд №{{tr.trainNumber}}</mat-card-title>
-            <hr class="post-card">
             <mat-card-subtitle>Скорость поезда:{{this.tr.trainSpeed}}</mat-card-subtitle>
             <mat-card-subtitle>Количество мест в поезде:{{this.tr.sumSeats}}</mat-card-subtitle>
           </mat-card-header>
-
+          <span style="font-weight: bold"> Маршрут:</span>
           <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
-
-        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd/MM/yy   HH:mm '}}
+        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yy HH:mm '}}
             --></span>
 
       </span>
@@ -48,18 +46,13 @@
 
   </mat-tab>
   <mat-tab label="Актуальные поезда">
-    <mat-paginator [length]="100"
-                   [pageSize]="10"
-                   [pageSizeOptions]="[5, 10, 25, 100]"
-                   aria-label="Select page">
-    </mat-paginator>
     <div *ngIf="trains; else und">
       <div *ngIf="trains.length!=0; else empty">
         <mat-card class="index-page" *ngFor="let tr of trains; let i = index">
           <mat-card-header style="text-align: center">
             <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title>Поезд №{{tr.trainNumber}}</mat-card-title>
-            <hr class="post-card">
+
             <mat-card-subtitle>Скорость поезда:{{this.tr.trainSpeed}}</mat-card-subtitle>
             <mat-card-subtitle>Количество мест в поезде:{{this.tr.sumSeats}}</mat-card-subtitle>
 
@@ -67,7 +60,7 @@
 
           <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
 
-        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd/MM/yy   HH:mm '}}
+        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
             --></span>
 
       </span>

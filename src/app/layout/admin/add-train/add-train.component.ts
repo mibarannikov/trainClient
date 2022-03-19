@@ -46,10 +46,11 @@ export class AddTrainComponent implements OnInit {
       trainNumber: this.addTrainForm.value.trainNumber,
       trainSpeed: this.addTrainForm.value.trainSpeed,
       sumSeats: this.addTrainForm.value.sumSeats,
-      departureTime: '2022-02-03T08:00:00.001',
+      departureTime: '',
+      arrivalTimeEnd: '',
       pointsOfSchedule: []
     }
-    console.log('train установлен',this.train);
+    console.log('train установлен', this.train);
     this.setTrainNumberFlag = true;
   }
 
@@ -74,9 +75,8 @@ export class AddTrainComponent implements OnInit {
   getCanGetStations(name: String): void {
     this.stationService.getStation(name).subscribe(data => {
       this.stationsName = data.canGetStation;
-      for(let p of this.train.pointsOfSchedule)
-      {
-        if ( this.stationsName.indexOf(p.nameStation)!== -1) {
+      for (let p of this.train.pointsOfSchedule) {
+        if (this.stationsName.indexOf(p.nameStation) !== -1) {
           this.stationsName.splice(this.stationsName.indexOf(p.nameStation), 1);
         }
       }
@@ -101,8 +101,8 @@ export class AddTrainComponent implements OnInit {
           console.log('date for next point', dateOld.setUTCSeconds(dateOld.getUTCSeconds() + time));
           console.log('date for next point', dateOld.setHours(dateOld.getHours() + 3));
           this.addArrivalTime = dateOld.toISOString().replace('Z', '');
-          dateOld.setMinutes(dateOld.getMinutes()+5);
-          this.addDepartureTime= dateOld.toISOString().replace('Z','');
+          dateOld.setMinutes(dateOld.getMinutes() + 5);
+          this.addDepartureTime = dateOld.toISOString().replace('Z', '');
           console.log(this.addArrivalTime);
           console.log(this.addDepartureTime);
         });
@@ -117,27 +117,35 @@ export class AddTrainComponent implements OnInit {
     console.log('getTime', this.date)
 
 
-      }
+  }
 
   addSchedulePointButton() {
-    if (this.train.pointsOfSchedule.length == 0){
-      this.train.departureTime=this.addArrivalTime;
+    if (this.train.pointsOfSchedule.length == 0) {
+      this.train.departureTime = this.addArrivalTime;
     }
 
     if (this.addArrivalStationName != '') {
       this.train.pointsOfSchedule.push(
-        {nameStation: this.addArrivalStationName, arrivalTime: this.addArrivalTime, departureTime:this.addDepartureTime});
+        {
+          nameStation: this.addArrivalStationName,
+          arrivalTime: this.addArrivalTime,
+          departureTime: this.addDepartureTime
+        });
       console.log('points', this.train.pointsOfSchedule);
       this.emptyPoint = false;
       console.log('name', this.addArrivalStationName)
       this.getCanGetStations(this.addArrivalStationName);
-      this.addArrivalTime='';
-      this.addDepartureTime='';
+      this.addArrivalTime = '';
+      this.addDepartureTime = '';
     }
   }
 
   createTrain() {
     console.log('creating train', this.train.pointsOfSchedule)
+    if (this.train.pointsOfSchedule.length > 0) {
+      this.train.arrivalTimeEnd = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime;
+      this.train.departureTime= this.train.pointsOfSchedule[0].arrivalTime;
+    }
     this.adminService.addTrain(this.train).subscribe(data => {
       console.log('created train', data)
     });

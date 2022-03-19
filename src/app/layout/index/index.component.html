@@ -1,105 +1,94 @@
-
 <mat-tab-group (selectedIndexChange)="gg()">
   <mat-tab label="Поиск билета">
-<div class="register-page">
-  <form [formGroup]="requestTrain">
-    <div style="text-align: center">
-      <mat-form-field appearance="outline">
-        <mat-label>Станция отправления</mat-label>
-        <input type="text"
-               placeholder="Pick one"
-               aria-label="Number"
-               matInput
-               [formControl]="myControl"
-               [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of this.options" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Станция прибытия</mat-label>
-        <input type="text"
-               placeholder="Pick one"
-               aria-label="Number"
-               matInput
-               [formControl]="myControl1"
-               [matAutocomplete]="auto1">
-        <mat-autocomplete #auto1="matAutocomplete">
-          <mat-option *ngFor="let option of this.options" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Начало периода</mat-label>
-        <input matInput type="datetime-local" [formControl]="dateStartControl">
-        <!-- (input)="dateArrival($event)"-->
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Конец периода</mat-label>
-        <input matInput type="datetime-local" [formControl]="dateEndControl">
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
+    <div class="register-page">
+      <form [formGroup]="requestTrain">
+        <div style="text-align: center">
+          <mat-form-field appearance="outline">
+            <mat-label>Станция отправления</mat-label>
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of this.options" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Станция прибытия</mat-label>
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl1"
+                   [matAutocomplete]="auto1">
+            <mat-autocomplete #auto1="matAutocomplete">
+              <mat-option *ngFor="let option of this.options" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Начало периода</mat-label>
+            <input matInput type="datetime-local" [formControl]="dateStartControl">
+            <!-- (input)="dateArrival($event)"-->
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Конец периода</mat-label>
+            <input matInput type="datetime-local" [formControl]="dateEndControl">
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div style="text-align: center">
+          <button style="width: 10%" mat-flat-button color="primary" (click)="giveTrains()"
+                  [disabled]="myControl.invalid || myControl1.invalid||dateStartControl.invalid||dateEndControl.invalid">
+            Найти
+          </button>
+        </div>
+      </form>
     </div>
-    <div style="text-align: center">
-      <button style="width: 10%" mat-flat-button color="primary" (click)="giveTrains()"
-              [disabled]="myControl.invalid || myControl1.invalid||dateStartControl.invalid||dateEndControl.invalid">
-        Найти
-      </button>
-    </div>
-  </form>
-</div>
-
-<div *ngIf="trains; else und">
-  <div *ngIf="trains.length!=0; else empty">
-    <mat-card class="index-page" *ngFor="let tr of trains; let i = index">
-      <mat-card-header style="text-align: center">
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Поезд №{{tr.trainNumber}}</mat-card-title>
-        <hr class="post-card">
-        <mat-card-subtitle>{{this.start}}</mat-card-subtitle>
-        <mat-card-subtitle>{{this.end}}</mat-card-subtitle>
-        <mat-card-subtitle>Свободные места {{tr.amountOfEmptySeats}}</mat-card-subtitle>
-      </mat-card-header>
-
-      <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
-
+    <div *ngIf="trains; else und">
+      <div *ngIf="trains.length!=0; else empty">
+        <mat-card class="index-page" *ngFor="let tr of trains; let i = index">
+          <mat-card-header style="text-align: center">
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Поезд №{{tr.trainNumber}}</mat-card-title>
+            <hr class="post-card">
+            <mat-card-subtitle>{{this.start}}</mat-card-subtitle>
+            <mat-card-subtitle>{{this.end}}</mat-card-subtitle>
+            <mat-card-subtitle>Свободные места {{tr.amountOfEmptySeats}}</mat-card-subtitle>
+          </mat-card-header>
+          <span appearance="none"  *ngFor="let p of tr.pointsOfSchedule">
         <span
-          [ngStyle]="{'font-weight':(p.nameStation==this.start)||(p.nameStation==this.end)?'bold':'inherit'}">{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
-        --></span>
+          [ngStyle]="{'font-weight':(p.nameStation==this.start)||(p.nameStation==this.end)?'bold':'inherit'}">{{p.nameStation}} </span>
+            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
+            --></span>
 
       </span>
-      <mat-card-actions align="start">
-
-        <button *ngIf="true" mat-button class="not-liked" (click)="buyTicket(tr.id,i)">
-          <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
-          <mat-icon>
-            payment
-          </mat-icon>
-          Купить билет
-        </button>
-      </mat-card-actions>
-
-
-    </mat-card>
-  </div>
-
-  <ng-template style="text-align: center" #empty>
-    <h1 style="text-align: center">Поездов нет</h1></ng-template>
-
-
-</div>
-<ng-template #und>
-  <h1 style="text-align: center">Найдите себе поезда</h1>
-</ng-template>
+          <mat-card-actions align="start">
+            <button *ngIf="true" mat-button class="not-liked" (click)="buyTicket(tr.id,i)">
+              <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+              <mat-icon>
+                payment
+              </mat-icon>
+              Купить билет
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <ng-template style="text-align: center" #empty>
+        <h1 style="text-align: center">Поездов нет</h1></ng-template>
+    </div>
+    <ng-template #und>
+      <h1 style="text-align: center">Найдите себе поезда</h1>
+    </ng-template>
   </mat-tab>
-
-
   <mat-tab label="Расписание">
-    <div> <h1>Расписание по станции</h1></div>
+    <div><h1>Расписание по станции</h1></div>
     <mat-form-field appearance="outline">
       <mat-label>Станция</mat-label>
       <input type="text"
@@ -115,51 +104,53 @@
       </mat-autocomplete>
     </mat-form-field>
     <button *ngIf="true" mat-button class="not-liked" (click)="getSchedule()">
-<!--    (click)="buyTicket(tr.id,i)-->
+      <!--    (click)="buyTicket(tr.id,i)-->
       <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
       <mat-icon>
         schedule
       </mat-icon>
-     Показать расписание
+      Показать расписание
     </button>
-
     <div><h1> {{st}}</h1></div>
-    <mat-grid-list cols="5" rowHeight="50px" style="background: lightgray; border: solid">
+    <mat-grid-list cols="5" rowHeight="50px" style="background: lavender; border: solid">
       <mat-grid-tile>Поезд №</mat-grid-tile>
       <mat-grid-tile>Сообщением</mat-grid-tile>
       <mat-grid-tile>Прибытие</mat-grid-tile>
       <mat-grid-tile>Отправление</mat-grid-tile>
       <mat-grid-tile>статус</mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list *ngFor="let trainSchedule of trainsForSchedule; let idx = index"
-      cols="5" rowHeight="50px" style="background: white; border: solid">
-      <mat-grid-tile>
-        <div>{{trainSchedule.trainNumber}}</div>
+    <div *ngIf="isLoaded">
+      <mat-grid-list *ngFor="let trainSchedule of trainsForSchedule; let idx = index"
+                     cols="5" rowHeight="50px" style="background: white; border: solid">
+        <mat-grid-tile>
+          <div>{{trainSchedule.trainNumber}}</div>
 
-      </mat-grid-tile>
-      <mat-grid-tile><div>
-        <span>{{trainSchedule.pointsOfSchedule[0].nameStation}}--</span>
-        <span>{{trainSchedule.pointsOfSchedule[trainSchedule.pointsOfSchedule.length-1].nameStation}}</span>
-      </div></mat-grid-tile>
-      <mat-grid-tile>{{this.arrdep[idx].arr | date:'dd.MM.yyyy hh:mm'}}</mat-grid-tile>
-      <mat-grid-tile>{{this.arrdep[idx].dep | date:'dd.MM.yyyy hh:mm'}}</mat-grid-tile>
-      <mat-grid-tile>{{this.arrdep[idx].status}}</mat-grid-tile>
-    </mat-grid-list>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div>
+            <span>{{trainSchedule.pointsOfSchedule[0].nameStation}}--</span>
+            <span>{{trainSchedule.pointsOfSchedule[trainSchedule.pointsOfSchedule.length - 1].nameStation}}</span>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>{{this.arrdep[idx].arr | date:'dd.MM.yyyy HH:mm'}}</mat-grid-tile>
+        <mat-grid-tile>{{this.arrdep[idx].dep | date:'dd.MM.yyyy HH:mm'}}</mat-grid-tile>
+        <mat-grid-tile>{{this.arrdep[idx].status}}</mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <!--    <div *ngIf="this.trainsForSchedule">-->
+    <!--      <div *ngIf="this.trainsForSchedule.length>0; else  emptyTrains">-->
+    <!--        <div *ngFor="let train of trainsForSchedule">-->
+    <!--          -->
 
-<!--    <div *ngIf="this.trainsForSchedule">-->
-<!--      <div *ngIf="this.trainsForSchedule.length>0; else  emptyTrains">-->
-<!--        <div *ngFor="let train of trainsForSchedule">-->
-<!--          -->
+    <!--        </div>-->
 
-<!--        </div>-->
-
-<!--      </div>-->
+    <!--      </div>-->
 
 
-<!--    </div>-->
+    <!--    </div>-->
 
 
-<!--    <ng-template #emptyTrains> по станции не проходят поезда в обозримом будущем </ng-template>-->
+    <!--    <ng-template #emptyTrains> по станции не проходят поезда в обозримом будущем </ng-template>-->
 
 
   </mat-tab>

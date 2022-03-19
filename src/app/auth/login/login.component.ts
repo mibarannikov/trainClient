@@ -13,8 +13,7 @@ import {UserService} from "../../service/user.service";
 })
 export class LoginComponent implements OnInit {
 
-  public loginForm: FormGroup ;
-
+  public loginForm: FormGroup;
 
 
   constructor(private authService: AuthService,
@@ -38,28 +37,27 @@ export class LoginComponent implements OnInit {
 
   createLoginForm(): FormGroup {
     return this.fb.group({
-      username: ['', Validators.compose([Validators.required,Validators.email])],
+      username: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.compose([Validators.required])]
     });
   }
 
   submit(): void {
-
     this.authService.login({
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
-    }).subscribe(data=>{
+    }).subscribe(data => {
       this.tokenStorage.saveToken(data.token);
       //this.tokenStorage.saveUser(data);
       this.notificationService.showSnakBar('Successfully logged in');
-      this.userService.getCurrentUser().subscribe(data=>{
+      this.userService.getCurrentUser().subscribe(data => {
         this.tokenStorage.saveUser(data);
       });
       this.router.navigate(['/']);
       window.location.reload();
-      }, error => {
+    }, error => {
       console.log(error);
-      this.notificationService.showSnakBar(error.message);
+      this.notificationService.showSnakBar(error.error.password+' '+error.error.username);
 
     });
 

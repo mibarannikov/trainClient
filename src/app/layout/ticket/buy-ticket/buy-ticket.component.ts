@@ -10,6 +10,7 @@ import {NotificationService} from "../../../service/notification.service";
 import {Ticket} from "../../../models/tiсket";
 
 
+
 @Component({
   selector: 'app-buy-ticket',
   templateUrl: './buy-ticket.component.html',
@@ -57,11 +58,13 @@ export class BuyTicketComponent implements OnInit {
   }
 
   buyingTicket() {
+    let d = new Date(this.buyTicket.value.dateOfBirth)
+    d.setHours(d.getHours()+3)
     this.ticketService.buyTicket({
         seatNumber: this.changeSeat,
         firstnamePassenger: this.buyTicket.value.firstname,
         lastnamePassenger: this.buyTicket.value.lastname,
-        dateOfBirth: this.buyTicket.value.dateOfBirth,
+        dateOfBirth: d,
         numberTrainOwner: this.trainInfo.trainForTicket.trainNumber,
         nameStations: this.ticketPoints
       }

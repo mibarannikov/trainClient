@@ -17,7 +17,10 @@ export class ShowPassengersComponent implements OnInit {
   options: Train[] = [];
   train: any | Train;
   filteredOptions: Observable<string[]>;
-  tickets: Ticket[];
+  ticketsAll: Ticket[];
+  ticketsReg: Ticket[];
+
+  label: number = 0;
 
   constructor(private adminService: AdminService) {
   }
@@ -58,7 +61,26 @@ export class ShowPassengersComponent implements OnInit {
     }
 
     this.adminService.getRegTickets(this.myControl.value).subscribe(data => {
-      this.tickets = data
+      this.ticketsReg = data
     })
+  }
+
+  gg() {
+    //this.st=this.myControl2.value;
+    console.log('reg', this.label);
+    if (this.label == 1) {
+      this.label = 0;
+      this.adminService.getRegTickets(this.myControl.value).subscribe(data => {
+        this.ticketsReg = data});
+    } else {
+      console.log('all');
+      this.adminService.getAllTickets(this.myControl.value).subscribe(data=>{
+        this.ticketsAll = data;
+        console.log(data)
+      })
+
+      this.label = 1;
+    }
+
   }
 }

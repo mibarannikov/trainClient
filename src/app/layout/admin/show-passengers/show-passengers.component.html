@@ -22,15 +22,18 @@
 </mat-card>
 <div *ngIf="this.train">
   <mat-card-title>
-    <div>Поезд №:{{this.train.trainNumber}}</div>
+    <div style="margin-top: 1rem; margin-left: 1rem">Поезд №:{{this.train.trainNumber}}</div>
     <mat-card-subtitle>
-      <div>Вместимость:{{this.train.sumSeats}}</div>
+      <div style="margin-top: 1rem; margin-left: 1rem">Вместимость:{{this.train.sumSeats}}</div>
     </mat-card-subtitle>
   </mat-card-title>
 </div>
-<div *ngIf="tickets; else und">
-  <div *ngIf="tickets.length!=0; else empty">
-    <mat-card class="index-page" *ngFor="let tck of tickets; let i = index">
+
+<mat-tab-group (selectedIndexChange)="gg()">
+  <mat-tab label="Зарегистрированные пасажиры">
+<div *ngIf="ticketsReg; else und">
+  <div *ngIf="ticketsReg.length!=0; else empty">
+    <mat-card class="index-page" *ngFor="let tck of ticketsReg; let i = index">
       <mat-card-header style="text-align: center">
 
         <mat-card-title>Пассажир:{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
@@ -41,7 +44,7 @@
 
       <span appearance="outline" *ngFor="let p of tck.nameStations">
 
-        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd/MM/yy   HH:mm '}}
+        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
         --></span>
 
       </span>
@@ -50,10 +53,44 @@
   </div>
 
   <ng-template style="text-align: center" #empty>
-    <h1 style="text-align: center">нет зарегистрированных пассажиров</h1></ng-template>
+    <h1 style="text-align: center; margin-top: 1rem">нет зарегистрированных пассажиров</h1></ng-template>
 
 
 </div>
 <ng-template #und>
   <h1 style="text-align: center">выберете поезд</h1>
 </ng-template>
+  </mat-tab>
+
+  <mat-tab label="Все пассажиры">
+    <div *ngIf="ticketsAll; else und">
+      <div *ngIf="ticketsAll.length!=0; else empty">
+        <mat-card class="index-page" *ngFor="let tck of ticketsAll; let i = index">
+          <mat-card-header style="text-align: center">
+
+            <mat-card-title>Пассажир:{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
+            <mat-card-subtitle>Дата рождения:{{tck.dateOfBirth}}</mat-card-subtitle>
+            <mat-card-subtitle> Место№{{tck.seatNumber}}</mat-card-subtitle>
+
+          </mat-card-header>
+
+          <span appearance="outline" *ngFor="let p of tck.nameStations">
+
+        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
+            --></span>
+
+      </span>
+
+        </mat-card>
+      </div>
+
+      <ng-template style="text-align: center" #empty>
+        <h1 style="text-align: center">Не продано ни одного билета</h1></ng-template>
+
+
+    </div>
+    <ng-template #und>
+      <h1 style="text-align: center">выберете поезд</h1>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

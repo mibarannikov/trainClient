@@ -18,12 +18,12 @@
 
         <span [ngStyle]="{'font-weight':(p.nameStation==this.trainInfo.startForTicket)||(p.nameStation==this.trainInfo.endForTicket)?'bold':'inherit'}">
           {{p.nameStation }} </span>
-        <span>{{p.arrivalTime | date:'dd.MM.yyyy hh:mm'}} --></span>
+        <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}} --></span>
 
 
       </span>
     </mat-card-subtitle>
-
+<h2>Свободные места</h2>
     <mat-radio-group
       aria-labelledby="example-radio-group-label"
       class="example-radio-group"
@@ -72,9 +72,7 @@
 
   <ng-template #go>
     Найдите себе поезд
-
     <button mat-button class="but">
-
       <a routerLink="/main"> На главную</a>
     </button>
   </ng-template>

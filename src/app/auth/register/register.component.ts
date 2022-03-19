@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
     },  error =>{
 
       this.notificationService.showSnakBar('не зарегистрирован');
-    });
+      console.log(error);});
   }
 
 }
