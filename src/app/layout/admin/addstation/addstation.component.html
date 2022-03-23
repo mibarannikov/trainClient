@@ -1,3 +1,4 @@
+<h1 style="text-align: center">Добавление новой станции</h1>
 <form [formGroup]="requestAddStation">
 <div style="text-align: center">
   <mat-form-field appearance="outline">
@@ -14,6 +15,7 @@
   </mat-form-field>
 </div>
 </form>
+<h1 style="text-align: center">Укажите станции, до которых есть железнождорожное сообщение</h1>
 <div style="text-align: center">
   <mat-form-field appearance="outline">
     <mat-label> Ближайшая станция</mat-label>
@@ -28,7 +30,7 @@
   </button>
 
   <div *ngIf="canGetStations.length==0" class="index-page">
-<h1>Укажите станции, до которых есть железнождорожное сообщение</h1>
+<!--<h1>Укажите станции, до которых есть железнождорожное сообщение</h1>-->
   </div>
   <div *ngIf="canGetStations.length!=0" class="index-page">
     <h1> Пути проложены до станций</h1>
@@ -42,7 +44,7 @@
   </div>
   <div>
     <button  style="width: 15%" mat-flat-button color="primary" (click)="addStation()" [disabled]="requestAddStation.invalid">
-      Добавить станцию
+      Создать станцию
     </button>
   </div>
 

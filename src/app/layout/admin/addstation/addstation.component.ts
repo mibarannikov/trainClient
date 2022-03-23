@@ -4,6 +4,7 @@ import {Station} from "../../../models/station";
 import {MatOptionSelectionChange} from "@angular/material/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {StationService} from "../../../service/station.service";
+import {NotificationService} from "../../../service/notification.service";
 
 @Component({
   selector: 'app-addstation',
@@ -20,7 +21,8 @@ export class AddstationComponent implements OnInit {
 
   constructor(public adminService: AdminService,
               public stationService: StationService,
-              private fb:FormBuilder) {
+              private fb:FormBuilder,
+              private notificationService: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -71,7 +73,10 @@ export class AddstationComponent implements OnInit {
     }).subscribe(data=>{
       console.log(data);
       this.getStations();
-      });
+      }, error => {
+      console.log("Станция с таким именем уже существует")
+      this.notificationService.showSnakBar("Станция с таким названием уже существует");
+    });
     this.requestAddStation.reset();
     this.canGetStations = [];
   }

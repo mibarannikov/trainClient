@@ -37,6 +37,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTabsModule} from "@angular/material/tabs";
 import { ShowPassengersComponent } from './layout/admin/show-passengers/show-passengers.component';
 import {MatGridListModule} from "@angular/material/grid-list";
+import {authErrorInterceptorProvider} from "./helper/error-interceptor.service";
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
     ],
   providers: [
     authInterceptorProviders,
+    authErrorInterceptorProvider,
     TrainInfoService],
   bootstrap: [AppComponent]
 })

@@ -26,8 +26,10 @@ export class AuthAdminGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> |
     Promise<boolean | UrlTree> | boolean | UrlTree {
     const currentUser = this.tokenService.getUser();
-    if (currentUser.role == 'ROLE_ADMIN') {
-      return true;
+    if(currentUser!=null) {
+      if (currentUser.role == 'ROLE_ADMIN') {
+        return true;
+      }
     }
     this.router.navigate(['/main'], {queryParams: {returnUrl: state.url}});
     return false;

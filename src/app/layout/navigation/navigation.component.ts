@@ -49,12 +49,12 @@ export class NavigationComponent implements OnInit {
       })
     }
 
-    this.setAdminRole();
+   // this.setAdminRole();
   }
 
   logout(): void {
     this.tokenService.logOut();
-    //this.router.navigate(['/login'])
+    this.router.navigate(['/main'])
   }
 
   setAdminRole(): void {

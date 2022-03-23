@@ -39,7 +39,7 @@
         <span
           [ngStyle]="{'font-weight':(p.nameStation==ticket.nameStations[0].nameStation)||(p.nameStation==ticket.nameStations[ticket.nameStations.length-1].arrivalTime)?'bold':'inherit'}">
           {{p.nameStation}} </span>
-        <span>{{p.arrivalTime}} --></span>
+        <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}} --></span>
 
       </span>
         </mat-card-subtitle>
@@ -80,7 +80,7 @@
         <span
           [ngStyle]="{'font-weight':(p.nameStation==ticket.nameStations[0].nameStation)||(p.nameStation==ticket.nameStations[ticket.nameStations.length-1].arrivalTime)?'bold':'inherit'}">
           {{p.nameStation}} </span>
-        <span>{{p.arrivalTime}} --></span>
+        <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}} --></span>
 
       </span>
         </mat-card-subtitle>

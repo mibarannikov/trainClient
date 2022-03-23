@@ -6,6 +6,8 @@ import {StationService} from "../../../service/station.service";
 import {MatOptionSelectionChange} from "@angular/material/core";
 import {Train} from "../../../models/train";
 import {Router} from "@angular/router";
+import {NotificationService} from "../../../service/notification.service";
+
 
 @Component({
   selector: 'app-add-train',
@@ -29,7 +31,8 @@ export class AddTrainComponent implements OnInit {
     private fb: FormBuilder,
     public adminService: AdminService,
     public stationService: StationService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
 
   }
@@ -96,8 +99,14 @@ export class AddTrainComponent implements OnInit {
           stationNew = data;
           let dateOld = new Date(this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime);
           let distance = Math.sqrt((stationNew.latitude - stationOld.latitude) ** 2 + (stationNew.longitude - stationOld.longitude) ** 2) * 1000;
+          let stNewLatRad = stationNew.latitude * 3.14 / 180;
+          let stOldLatRad = stationOld.latitude * 3.14 / 180;
+          let deltaLonRad = (stationNew.longitude - stationOld.longitude) * 3.14 / 180;
+          let distReal = 2 * Math.asin(Math.sqrt(Math.sin((stNewLatRad - stOldLatRad) / 2) ** 2 + Math.cos(stOldLatRad) * Math.cos(stNewLatRad) * Math.sin(deltaLonRad / 2) ** 2));
+          distReal = distReal * 6372795;
+          console.log('real ', distReal);
           let v = this.train.trainSpeed * 0.2777;
-          let time = distance / v;
+          let time = distReal / v;
           console.log('date for next point', dateOld.setUTCSeconds(dateOld.getUTCSeconds() + time));
           console.log('date for next point', dateOld.setHours(dateOld.getHours() + 3));
           this.addArrivalTime = dateOld.toISOString().replace('Z', '');
@@ -144,10 +153,13 @@ export class AddTrainComponent implements OnInit {
     console.log('creating train', this.train.pointsOfSchedule)
     if (this.train.pointsOfSchedule.length > 0) {
       this.train.arrivalTimeEnd = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime;
-      this.train.departureTime= this.train.pointsOfSchedule[0].arrivalTime;
+      this.train.departureTime = this.train.pointsOfSchedule[0].arrivalTime;
     }
     this.adminService.addTrain(this.train).subscribe(data => {
       console.log('created train', data)
+    }, error => {
+
+      this.notificationService.showSnakBar("Поезд с номером "+this.train.trainNumber+" уже существует");
     });
     this.addTrainForm.reset();
     this.setTrainNumberFlag = false;

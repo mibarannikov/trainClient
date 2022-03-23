@@ -1,5 +1,5 @@
 <div class="login-page">
-<h2>Register</h2>
+<h2>Регистрация</h2>
 <form [formGroup]="registerForm" >
   <div class="justify-content-center">
 
@@ -19,14 +19,14 @@
 
     <div>
       <mat-form-field appearance="outline">
-        <mat-label> Firstname </mat-label>
+        <mat-label> Имя </mat-label>
         <input matInput  formControlName="firstname">
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field appearance="outline">
-        <mat-label> Lastname </mat-label>
+        <mat-label> Фамилия </mat-label>
         <input matInput  formControlName="lastname">
       </mat-form-field>
     </div>
@@ -50,10 +50,10 @@
   <div id="controls" class="row">
 
     <button style="width: 20%" [disabled]="registerForm.invalid" (click)="submit()" mat-flat-button color="primary">
-      Register
+      Регистрация
     </button>
 
-    <a routerLink="/login"> login </a>
+    <a routerLink="/login"> Вход </a>
   </div>
 
 </form>

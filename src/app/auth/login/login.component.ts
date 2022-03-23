@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
     }, error => {
       console.log(error);
       this.notificationService.showSnakBar(error.error.password+' '+error.error.username);
-
     });
 
 

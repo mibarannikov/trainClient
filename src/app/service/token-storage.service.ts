@@ -30,7 +30,10 @@ export class TokenStorageService {
   }
 
   logOut(): void{
-     window.sessionStorage.clear();
-     window.location.reload();
+    window.sessionStorage.clear();
+    if(sessionStorage.getItem(TOKEN_KEY) == null){
+    window.location.reload();}
+
+
   }
 }

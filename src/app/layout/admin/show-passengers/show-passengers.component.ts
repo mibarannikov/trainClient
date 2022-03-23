@@ -62,7 +62,12 @@ export class ShowPassengersComponent implements OnInit {
 
     this.adminService.getRegTickets(this.myControl.value).subscribe(data => {
       this.ticketsReg = data
+    });
+    this.adminService.getAllTickets(this.myControl.value).subscribe(data=>{
+      this.ticketsAll = data;
+      console.log(data)
     })
+
   }
 
   gg() {
