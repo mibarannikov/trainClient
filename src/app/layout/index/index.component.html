@@ -10,7 +10,8 @@
                    aria-label="Number"
                    matInput
                    [formControl]="myControl"
-                   [matAutocomplete]="auto">
+                   [matAutocomplete]="auto"
+                   (input)="onInputStart($event)">
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let option of this.options" [value]="option">
                 {{option}}
@@ -24,17 +25,17 @@
                    aria-label="Number"
                    matInput
                    [formControl]="myControl1"
-                   [matAutocomplete]="auto1">
+                   [matAutocomplete]="auto1"
+                   (input)="onInputEnd($event)">
             <mat-autocomplete #auto1="matAutocomplete">
-              <mat-option *ngFor="let option of this.options" [value]="option">
-                {{option}}
+              <mat-option *ngFor="let option1 of this.options1" [value]="option1">
+                {{option1}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Начало периода</mat-label>
             <input matInput type="datetime-local" [formControl]="dateStartControl">
-            <!-- (input)="dateArrival($event)"-->
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
           <mat-form-field appearance="outline">
@@ -97,10 +98,11 @@
              aria-label="Number"
              matInput
              [formControl]="myControl2"
-             [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of this.options" [value]="option">
-          {{option}}
+             [matAutocomplete]="auto2"
+             (input)="onInputSchedule($event)">
+      <mat-autocomplete #auto2="matAutocomplete">
+        <mat-option *ngFor="let option2 of this.options2" [value]="option2">
+          {{option2}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

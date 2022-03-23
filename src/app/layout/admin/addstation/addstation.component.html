@@ -1,51 +1,155 @@
-<h1 style="text-align: center">Добавление новой станции</h1>
-<form [formGroup]="requestAddStation">
-<div style="text-align: center">
-  <mat-form-field appearance="outline">
-    <mat-label> Название станции</mat-label>
-    <input  matInput formControlName="nameStation">
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label> Широта</mat-label>
-    <input matInput formControlName="latitude">
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label> Долгота</mat-label>
-    <input matInput formControlName="longitude">
-  </mat-form-field>
-</div>
-</form>
-<h1 style="text-align: center">Укажите станции, до которых есть железнождорожное сообщение</h1>
-<div style="text-align: center">
-  <mat-form-field appearance="outline">
-    <mat-label> Ближайшая станция</mat-label>
-    <mat-select >
-      <mat-option *ngFor="let name of this.stations;let i = index" [value]="name.nameStation" (onSelectionChange)="onInput($event)" >     <!-- *ngFor="let food of foods" [value]="food.value"-->
-          {{name.nameStation}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button style="width: 10%" mat-flat-button color="primary" (click)="addCanGet()">
-    Добавить
-  </button>
+<mat-tab-group (selectedIndexChange)="gg()">
+  <mat-tab label="Добавление станции">
 
-  <div *ngIf="canGetStations.length==0" class="index-page">
-<!--<h1>Укажите станции, до которых есть железнождорожное сообщение</h1>-->
-  </div>
-  <div *ngIf="canGetStations.length!=0" class="index-page">
-    <h1> Пути проложены до станций</h1>
-    <div *ngFor="let name of canGetStations">
+    <h1 style="text-align: center">Добавление новой станции</h1>
+    <form [formGroup]="requestAddStation">
+      <div style="text-align: center">
+        <mat-form-field appearance="outline">
+          <mat-label> Название станции</mat-label>
+          <input matInput formControlName="nameStation">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> Широта</mat-label>
+          <input matInput formControlName="latitude">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> Долгота</mat-label>
+          <input matInput formControlName="longitude">
+        </mat-form-field>
+      </div>
+    </form>
+    <h1 style="text-align: center">Укажите станции, до которых есть железнождорожное сообщение</h1>
+    <div style="text-align: center">
+      <mat-form-field appearance="outline">
+        <mat-label> Ближайшая станция</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let st of this.stations;let i = index" [value]="st.nameStation"
+                      (onSelectionChange)="onInput($event)">     <!-- *ngFor="let food of foods" [value]="food.value"-->
+            {{st.nameStation}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button style="width: 10%" mat-flat-button color="primary" (click)="addCanGet()">
+        Добавить
+      </button>
+
+      <div *ngIf="canGetStations.length==0" class="index-page">
+        <!--<h1>Укажите станции, до которых есть железнождорожное сообщение</h1>-->
+      </div>
+      <div *ngIf="canGetStations.length!=0" class="index-page">
+        <h1> Пути проложены до станций</h1>
+        <div *ngFor="let name of canGetStations">
+          <div>
+            <h2>{{name}}</h2>
+          </div>
+
+        </div>
+
+      </div>
       <div>
-      <h2>{{name}}</h2>
+        <button style="width: 15%" mat-flat-button color="primary" (click)="addStation()"
+                [disabled]="requestAddStation.invalid">
+          Создать станцию
+        </button>
       </div>
 
     </div>
+  </mat-tab>
+  <mat-tab label="Редактирование станции">
+    <h1 style="margin-left: 1rem">Выберете станцию для редактирования</h1>
+    <div>
+      <mat-form-field style="margin-left: 1rem" appearance="outline">
+        <mat-label style="margin-left: 1rem">Станция</mat-label>
+        <input style="margin-left: 1rem"
+               type="text"
+               placeholder="Pick one"
+               aria-label="Number"
+               matInput
+               [formControl]="myControl"
+               [matAutocomplete]="auto3"
+               (input)="onInputStation($event)">
+        <mat-autocomplete #auto3="matAutocomplete">
+          <mat-option *ngFor="let st of this.stationsForEdite" [value]="st.nameStation">
+            {{st.nameStation}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
 
-  </div>
-  <div>
-    <button  style="width: 15%" mat-flat-button color="primary" (click)="addStation()" [disabled]="requestAddStation.invalid">
-      Создать станцию
-    </button>
-  </div>
+      <button *ngIf="true" mat-button class="not-liked" (click)="edit()" [disabled]="myControl.invalid">
+        <!--    (click)="buyTicket(tr.id,i)-->
+        <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+        <mat-icon>
+          edit
+        </mat-icon>
+        Редактировать
+      </button>
 
-</div>
+      <div *ngIf="this.visibilityStation">
+        <h1 style="margin-left: 1rem">Станция:{{this.stationForEdit.nameStation}}</h1>
+        <mat-form-field appearance="outline">
+          <mat-label> Название станции</mat-label>
+          <input matInput [formControl]="nameStationEdit">
+        </mat-form-field>
+        <mat-form-field style="margin-left: 3rem" appearance="outline">
+          <mat-label> Широта</mat-label>
+          <input matInput [formControl]="latEdit">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> Долгота</mat-label>
+          <input matInput [formControl]="lonEdit">
+        </mat-form-field>
+        <button mat-button class="not-liked" (click)="getFromMap()">
+          <mat-icon>
+            place
+          </mat-icon>
+          Указать на карте
+        </button>
+        <h1 style="margin-left: 3rem">Достижимые станции</h1>
+        <div style=" display:inline;">
+          <div *ngFor="let stCan of stationForEdit.canGetStation; let i=index" style=" display:inline-block;">
+            <mat-card style="margin-left:1rem; border: black solid; width: min-content; height: max-content"
+                      appearance="outline">
+              <div style="text-align: center">{{stCan}}</div>
+              <button mat-button style="margin-bottom: 0px" (click)="deleteStationFromCanGetStation(i)">
+                <mat-icon style="margin-bottom: 0px">
+                  cancel
+                </mat-icon>
+              </button>
+            </mat-card>
+          </div>
+          <button *ngIf="!addStCan" mat-button style="margin-bottom: 0px" (click)="addCanGetEdit()">
+            <mat-icon style="margin-bottom: 0px;size: auto">
+              add
+            </mat-icon>
+            добавить
+          </button>
+          <div *ngIf="addStCan"  style=" display:inline;">
+            <mat-form-field style="margin-left: 1rem" appearance="outline">
+              <mat-label style="margin-left: 1rem">Станция</mat-label>
+              <input style="margin-left: 1rem"
+                     type="text"
+                     placeholder="Pick one"
+                     aria-label="Number"
+                     matInput
+                     [formControl]="myControl2"
+                     [matAutocomplete]="auto1"
+                     (input)="onInputAddStation($event)">
+              <mat-autocomplete #auto1="matAutocomplete">
+                <mat-option *ngFor="let st of this.stationsForAddCanGet" [value]="st.nameStation">
+                  {{st.nameStation}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <button  mat-button style="margin-bottom: 0px" (click)="addCanGetToStationEdit()">
+              <mat-icon style="margin-bottom: 0px;size: auto">
+                add
+              </mat-icon>
+              добавить
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

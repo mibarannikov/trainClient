@@ -25,4 +25,8 @@ export class StationService {
   getTrainsForSchedule(stationName: string):Observable<any> {
    return  this.http.get(STATION_API+'stationschedule?station='+stationName)
   }
+
+  getSearchStations(searchValue:string): Observable<any> {
+    return this.http.get(STATION_API + 'search?value='+searchValue);
+  }
 }

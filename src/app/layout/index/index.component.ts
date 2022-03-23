@@ -17,6 +17,7 @@ import {PointOfSchedule} from "../../models/pointOfSchedule";
 })
 export class IndexComponent implements OnInit {
 
+  searchString: string = '';
   myControl2 = new FormControl('', Validators.required);
   myControl = new FormControl('', Validators.required);
   options: string[] = [];
@@ -27,12 +28,13 @@ export class IndexComponent implements OnInit {
   filteredOptions1: Observable<string[]>;
   dateStartControl = new FormControl('', Validators.required)
   dateEndControl = new FormControl('', Validators.required)
+  options2: string[] = [];
 
-  st:string;
-  public arrdep: [{ arr: string | undefined, dep: string | undefined, status: string }]  ;
+  st: string;
+  public arrdep: [{ arr: string | undefined, dep: string | undefined, status: string }];
   nam: string = '';
   label: number = 0;
-  isLoaded:boolean = false;
+  isLoaded: boolean = false;
   start: string;
   end: string;
   isTrainLoaded = false;
@@ -59,13 +61,14 @@ export class IndexComponent implements OnInit {
       for (var s of data) {
         this.options1.push(s.nameStation);
         this.options.push(s.nameStation);
+        this.options2.push(s.nameStation);
       }
     });
     let dt = new Date()
-    dt.setHours(dt.getHours()+3);
-    this.dateStartControl.setValue(dt.toISOString().replace('Z','').split('.')[0]);
-    dt.setMonth(dt.getMonth()+1);
-    this.dateEndControl.setValue(dt.toISOString().replace('Z','').split('.')[0])
+    dt.setHours(dt.getHours() + 3);
+    this.dateStartControl.setValue(dt.toISOString().replace('Z', '').split('.')[0]);
+    dt.setMonth(dt.getMonth() + 1);
+    this.dateEndControl.setValue(dt.toISOString().replace('Z', '').split('.')[0])
     // this.myControl.value.setValue(this.trainInfoService.startForTicket);
     //this.myControl1.value.setValue(this.trainInfoService.endForTicket);
 
@@ -124,7 +127,7 @@ export class IndexComponent implements OnInit {
   }
 
   gg() {
-    this.st=this.myControl2.value;
+    this.st = this.myControl2.value;
     console.log('in', this.label);
     if (this.label == 1) {
       this.label = 0;
@@ -139,20 +142,16 @@ export class IndexComponent implements OnInit {
 
   private getTrainsForSchedule() {
 
-    this.isLoaded=false;
+    this.isLoaded = false;
     // @ts-ignore
-    this.arrdep=[];
-    console.log('get');
+    this.arrdep = [];
     this.stationService.getTrainsForSchedule(this.myControl2.value).subscribe(data => {
       this.trainsForSchedule = data;
-      console.log('data',data)
-      if(this.trainsForSchedule) {
+      if (this.trainsForSchedule) {
         for (let tr of this.trainsForSchedule) {
           let arrPoint: PointOfSchedule | undefined = tr.pointsOfSchedule.find(p => p.nameStation === this.myControl2.value);
-          console.log(arrPoint)
           // @ts-ignore
           let datef: Date = new Date(arrPoint.arrivalTime)
-          console.log('datef', datef)
           datef.setMinutes(datef.getMinutes() + 5);
           console.log('detef+5', datef.setHours(datef.getHours() + 3))
           console.log('ISO', datef.toISOString())
@@ -172,14 +171,44 @@ export class IndexComponent implements OnInit {
           this.arrdep.push({arr: arrPoint.arrivalTime, dep: arrPoint.departureTime, status: statuss})
         }
       }
-      console.log('массив прибытия отправления',this.arrdep)
+      console.log('массив прибытия отправления', this.arrdep)
       this.isLoaded = true;
     })
 
   }
 
   getSchedule() {
-    this.st=this.myControl2.value;
+    this.st = this.myControl2.value;
     this.getTrainsForSchedule();
+  }
+
+  onInputStart(event: any) {
+      this.stationService.getSearchStations(event.target.value).subscribe(data=>{
+        this.options=[];
+        for (let s of data) {
+          this.options.push(s.nameStation);
+        }
+      })
+  }
+
+  onInputEnd(event: any) {
+    this.stationService.getSearchStations(event.target.value).subscribe(data=>{
+      this.options1=[];
+      for (let s of data) {
+        this.options1.push(s.nameStation);
+      }
+    })
+  }
+
+  onInputSchedule(event: any) {
+    console.log(event)
+    this.stationService.getSearchStations(event.target.value).subscribe(data=>{
+      this.options2=[];
+      for (let s of data) {
+        this.options2.push(s.nameStation);
+      }
+      console.log('результат', this.options2)
+    })
+
   }
 }
