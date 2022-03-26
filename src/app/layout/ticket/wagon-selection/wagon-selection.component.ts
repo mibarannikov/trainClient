@@ -21,15 +21,17 @@ export class WagonSelectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let w of this.trainInfo.trainForTicket.wagons){
-      this.ticketservice.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
-       w.wagonNumber,
-        this.trainInfo.startForTicket,
-        this.trainInfo.endForTicket).subscribe(data=>{
-          w.emptySeats=data.length;
-          this.allWagonLoaded++;
-      })
-    }
+   if(this.trainInfo.trainForTicket) {
+     for (let w of this.trainInfo.trainForTicket.wagons) {
+       this.ticketservice.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
+         w.wagonNumber,
+         this.trainInfo.startForTicket,
+         this.trainInfo.endForTicket).subscribe(data => {
+         w.emptySeats = data.length;
+         this.allWagonLoaded++;
+       })
+     }
+   }
   }
 
   buyTicket(wagon: Wagon, i: number) {

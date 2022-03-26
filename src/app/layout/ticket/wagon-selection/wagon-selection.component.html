@@ -1,32 +1,35 @@
-<div *ngIf="allWagonLoaded==this.trainInfo.trainForTicket.wagons.length">
-  <h1>Поезд№{{trainInfo.trainForTicket.trainNumber}}</h1>
+<div *ngIf="this.trainInfo.trainForTicket">
+  <div *ngIf="allWagonLoaded==this.trainInfo.trainForTicket.wagons.length">
+    <h1>Поезд№{{trainInfo.trainForTicket.trainNumber}}</h1>
 
-  <mat-card class="index-page" *ngFor="let wagon of trainInfo.trainForTicket.wagons; let i = index">
-    <mat-card-header style="text-align: center">
-      <mat-card-title style="display: inline">Вагон №{{wagon.wagonNumber}}</mat-card-title>
-      <mat-card-title style="margin-left: 1rem; display: inline">{{wagon.name}}</mat-card-title>
-      <div>
-        <mat-card-subtitle
-          style="margin-bottom: 0rem;margin-top: 1rem;margin-left: 0rem;display: inline">{{trainInfo.startForTicket}}</mat-card-subtitle>
-        <mat-card-subtitle style="display: inline">-->{{trainInfo.endForTicket}}</mat-card-subtitle>
-      </div>
-      <mat-card-subtitle style="margin-top: 1rem;margin-bottom: 0rem"><h2>Свободные места: {{wagon.emptySeats}}</h2></mat-card-subtitle>
-    </mat-card-header>
-    <!--    <span appearance="none" *ngFor="let p of tr.pointsOfSchedule">-->
-    <!--        <span-->
-    <!--          [ngStyle]="{'font-weight':(p.nameStation==this.start)||(p.nameStation==this.end)?'bold':'inherit'}">{{p.nameStation}} </span>-->
-    <!--            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}-->
-    <!--              &ndash;&gt;</span>-->
+    <mat-card class="index-page" *ngFor="let wagon of trainInfo.trainForTicket.wagons; let i = index">
+      <mat-card-header style="text-align: center">
+        <mat-card-title style="display: inline">Вагон №{{wagon.wagonNumber}}</mat-card-title>
+        <mat-card-title style="margin-left: 1rem; display: inline">{{wagon.name}}</mat-card-title>
+        <div>
+          <mat-card-subtitle
+            style="margin-bottom: 0rem;margin-top: 1rem;margin-left: 0rem;display: inline">{{trainInfo.startForTicket}}</mat-card-subtitle>
+          <mat-card-subtitle style="display: inline">-->{{trainInfo.endForTicket}}</mat-card-subtitle>
+        </div>
+        <mat-card-subtitle style="margin-top: 1rem;margin-bottom: 0rem"><h2>Свободные места: {{wagon.emptySeats}}</h2>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <!--    <span appearance="none" *ngFor="let p of tr.pointsOfSchedule">-->
+      <!--        <span-->
+      <!--          [ngStyle]="{'font-weight':(p.nameStation==this.start)||(p.nameStation==this.end)?'bold':'inherit'}">{{p.nameStation}} </span>-->
+      <!--            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}-->
+      <!--              &ndash;&gt;</span>-->
 
-    <!--      </span>-->
-    <mat-card-actions align="end" style="margin-top: 0rem">
-      <button *ngIf="true" mat-button class="not-liked" (click)="buyTicket(trainInfo.trainForTicket.wagons[i],i)">
-        <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
-        <mat-icon>
-          payment
-        </mat-icon>
-        Купить билет
-      </button>
-    </mat-card-actions>
-  </mat-card>
+      <!--      </span>-->
+      <mat-card-actions align="end" style="margin-top: 0rem">
+        <button *ngIf="true" mat-button class="not-liked" (click)="buyTicket(trainInfo.trainForTicket.wagons[i],i)">
+          <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+          <mat-icon>
+            payment
+          </mat-icon>
+          Купить билет
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
