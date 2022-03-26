@@ -85,8 +85,17 @@
       </button>
 
       <div *ngIf="this.visibilityStation">
-        <h1 style="margin-left: 1rem">Станция:{{this.stationForEdit.nameStation}}</h1>
-        <mat-form-field appearance="outline">
+        <div style="margin-bottom: 2rem">
+          <h1 style="margin-left: 1rem;display:inline;">Станция:{{this.stationForEdit.nameStation}}</h1>
+          <button style="width: content-box; margin-left: 2rem; " mat-flat-button color="primary" (click)="saveChange()"
+                  [disabled]="nameStationEdit.invalid||latEdit.invalid||lonEdit.invalid">
+            Сохранить измнения
+          </button>
+          <button style="width: content-box; margin-left: 2rem; " mat-flat-button color="primary" (click)="edit()">
+            Отмена
+          </button>
+        </div>
+        <mat-form-field appearance="outline" style="margin-left: 1rem">
           <mat-label> Название станции</mat-label>
           <input matInput [formControl]="nameStationEdit">
         </mat-form-field>
@@ -106,15 +115,15 @@
         </button>
         <h1 style="margin-left: 3rem">Достижимые станции</h1>
         <div style=" display:inline;">
-          <div *ngFor="let stCan of stationForEdit.canGetStation; let i=index" style=" display:inline-block;">
-            <mat-card style="margin-left:1rem; border: black solid; width: min-content; height: max-content"
+          <div *ngFor="let canGetStation of stationForEdit.canGetStation; let i=index" style=" display:inline-block;">
+            <mat-card style="margin-left:1rem; border: black solid; width: content-box; height: max-content"
                       appearance="outline">
-              <div style="text-align: center">{{stCan}}</div>
-              <button mat-button style="margin-bottom: 0px" (click)="deleteStationFromCanGetStation(i)">
-                <mat-icon style="margin-bottom: 0px">
+              <div style="text-align: center ; display: inline">{{canGetStation}}</div>
+<!--              <button mat-button style="margin-bottom: 0px; display: inline" (click)="deleteStationFromCanGetStation(i)">-->
+                <mat-icon style="margin-bottom: 0px; display: inline" (click)="deleteStationFromCanGetStation(i)">
                   cancel
                 </mat-icon>
-              </button>
+<!--              </button>-->
             </mat-card>
           </div>
           <button *ngIf="!addStCan" mat-button style="margin-bottom: 0px" (click)="addCanGetEdit()">
@@ -123,7 +132,7 @@
             </mat-icon>
             добавить
           </button>
-          <div *ngIf="addStCan"  style=" display:inline;">
+          <div *ngIf="addStCan" style=" display:inline;">
             <mat-form-field style="margin-left: 1rem" appearance="outline">
               <mat-label style="margin-left: 1rem">Станция</mat-label>
               <input style="margin-left: 1rem"
@@ -141,7 +150,7 @@
               </mat-autocomplete>
             </mat-form-field>
 
-            <button  mat-button style="margin-bottom: 0px" (click)="addCanGetToStationEdit()">
+            <button mat-button style="margin-bottom: 0px" (click)="addCanGetToStationEdit()">
               <mat-icon style="margin-bottom: 0px;size: auto">
                 add
               </mat-icon>

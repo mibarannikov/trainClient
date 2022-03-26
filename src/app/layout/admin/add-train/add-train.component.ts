@@ -15,7 +15,9 @@ import {NotificationService} from "../../../service/notification.service";
   styleUrls: ['./add-train.component.css']
 })
 export class AddTrainComponent implements OnInit {
-
+  wagons: string[] = ['Плацкарт',
+    'Купе',
+    'Ресторан'];
   public addTrainForm: FormGroup;
   public stations: Station[];
   public stationsName: String[];
@@ -26,6 +28,8 @@ export class AddTrainComponent implements OnInit {
   public emptyPoint: boolean;
   public setTrainNumberFlag: boolean;
   addDepartureTime: any;
+  addWagonFlag: boolean = false;
+  addWag: string;
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +52,8 @@ export class AddTrainComponent implements OnInit {
     this.train = {
       trainNumber: this.addTrainForm.value.trainNumber,
       trainSpeed: this.addTrainForm.value.trainSpeed,
-      sumSeats: this.addTrainForm.value.sumSeats,
+      wagons: [],
+      sumSeats: 0,
       departureTime: '',
       arrivalTimeEnd: '',
       pointsOfSchedule: []
@@ -60,8 +65,8 @@ export class AddTrainComponent implements OnInit {
   createAddTrainForm(): FormGroup {
     return this.fb.group({
       trainNumber: [123, Validators.compose([Validators.required])],
-      trainSpeed: [40, Validators.compose([Validators.required])],
-      sumSeats: [10, Validators.compose([Validators.required])]
+      trainSpeed: [40, Validators.compose([Validators.required])]
+      // sumSeats: [10, Validators.compose([Validators.required])]
     });
   }
 
@@ -159,7 +164,7 @@ export class AddTrainComponent implements OnInit {
       console.log('created train', data)
     }, error => {
 
-      this.notificationService.showSnakBar("Поезд с номером "+this.train.trainNumber+" уже существует");
+      this.notificationService.showSnakBar("Поезд с номером " + this.train.trainNumber + " уже существует");
     });
     this.addTrainForm.reset();
     this.setTrainNumberFlag = false;
@@ -169,6 +174,8 @@ export class AddTrainComponent implements OnInit {
     this.setTrainNumberFlag = false;
     this.addTrainForm.reset();
     this.train.pointsOfSchedule = [];
+    this.train.wagons=[];
+    this.train.sumSeats=0;
   }
 
 
@@ -178,5 +185,58 @@ export class AddTrainComponent implements OnInit {
     this.date = new Date(this.addDepartureTime);
     console.log('getTime', this.date)
 
+  }
+
+  deleteWagon(i: number) {
+
+    this.train.sumSeats-=this.train.wagons[i].sumSeats;
+    this.train.wagons.splice(i, 1);
+
+  }
+
+  addWagon() {
+    this.addWagonFlag = !this.addWagonFlag;
+
+  }
+
+  onInputAddWagon(event: MatOptionSelectionChange) {
+    this.addWag = event.source.value;
+  }
+
+  addWagonToTrain() {
+    console.log(this.addWag);
+    if (!!this.addWag) {
+      if (this.addWag != '') {
+        let sumSeat: number = 0;
+        let type: string = '';
+        switch (this.addWag) {
+          case 'Купе': {
+            sumSeat = 36;
+            type = 'coupe';
+            break;
+          }
+          case 'Плацкарт': {
+            sumSeat = 54;
+            type = 'platzkarte';
+            break;
+          }
+          case 'Ресторан': {
+            sumSeat = 0;
+            type = 'restaurant';
+            break;
+          }
+        }
+
+        this.train.wagons.push({wagonNumber:this.train.wagons.length+1,
+          type: type,
+          name: this.addWag,
+          sumSeats: sumSeat,
+          trainNumber:this.train.trainNumber});
+        this.train.sumSeats+=sumSeat;
+      }
+    }
+    console.log(this.train)
+    this.addWagonFlag = !this.addWagonFlag;
+    this.addWag = '';
   }
 }

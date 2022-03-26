@@ -1,0 +1,23 @@
+.index-page {
+  display: block;
+  margin: 2rem auto;
+  width: 60%;
+  padding-top: 1rem;
+  border:  solid;
+}
+
+.post-card {
+  display: block;
+  margin:2rem ;
+  width: 90%;
+  border: solid;
+  background: lightgrey;
+}
+
+.is-liked {
+  color: darkred;
+}
+
+.not-liked {
+  color: black;
+}

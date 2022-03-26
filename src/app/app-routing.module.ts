@@ -11,12 +11,14 @@ import {AuthAdminGuardService} from "./helper/auth-admin-guard.service";
 import {AddTrainComponent} from "./layout/admin/add-train/add-train.component";
 import {ShowTrainsComponent} from "./layout/admin/show-trains/show-trains.component";
 import {ShowPassengersComponent} from "./layout/admin/show-passengers/show-passengers.component";
+import {WagonSelectionComponent} from "./layout/ticket/wagon-selection/wagon-selection.component";
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'main', component:IndexComponent },
+  {path: 'wagons',component:WagonSelectionComponent},
   {path:'ticket', component: BuyTicketComponent,canActivate:[AuthGuardService]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthGuardService]},
   {path: 'addstation', component: AddstationComponent, canActivate:[AuthAdminGuardService]},

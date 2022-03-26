@@ -5,6 +5,7 @@ import {Station} from "../models/station";
 import {Train} from "../models/train";
 import {Ticket} from "../models/tiсket";
 
+
 const ADMIN_API = 'http://localhost:8080/api/admin/'
 
 @Injectable({
@@ -14,6 +15,10 @@ export class AdminService {
   stations: Station[];
 
   constructor(private http: HttpClient) {
+  }
+
+  stationEdit(station: Station): Observable<any> {
+    return this.http.put(ADMIN_API + 'station/edit', station);
   }
 
   getStations(): Observable<any> {
@@ -29,19 +34,19 @@ export class AdminService {
   }
 
 
-  getAllTrains():Observable<any>{
-    return this.http.get(ADMIN_API+'train/all');
+  getAllTrains(param:string): Observable<any> {
+    return this.http.get(ADMIN_API + 'train/all?param='+param);
   }
 
-  getRegTickets(trainNumber: number){
-    return this.http.get<Ticket[]>(ADMIN_API+'regtickets?train='+trainNumber);
+  getRegTickets(trainNumber: number) {
+    return this.http.get<Ticket[]>(ADMIN_API + 'regtickets?train=' + trainNumber);
   }
 
-  getAllTickets(trainNumber:number){
-    return this.http.get<Ticket[]>(ADMIN_API+'alltickets?train='+trainNumber);
+  getAllTickets(trainNumber: number) {
+    return this.http.get<Ticket[]>(ADMIN_API + 'alltickets?train=' + trainNumber);
   }
 
   getAllActTrains(): Observable<any> {
-    return this.http.get(ADMIN_API+'train/allact');
+    return this.http.get(ADMIN_API + 'train/allact');
   }
 }

@@ -50,6 +50,7 @@ export class BuyTicketComponent implements OnInit {
         //change:[, Validators.compose([Validators.required])]
       });
       this.ticketService.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
+        this.trainInfo.wagonNumberForByTicket,
         this.trainInfo.startForTicket,
         this.trainInfo.endForTicket).subscribe(data => {
         this.seats = data;
@@ -78,6 +79,7 @@ export class BuyTicketComponent implements OnInit {
         this.notificationService.showSnakBar('посадка на поезд окончена');
       }
       this.ticketService.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
+        this.trainInfo.wagonNumberForByTicket,
         this.trainInfo.startForTicket,
         this.trainInfo.endForTicket).subscribe(data => {
         this.seats = data;

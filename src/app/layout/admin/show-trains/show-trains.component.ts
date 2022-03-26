@@ -15,7 +15,7 @@ export class ShowTrainsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adminService.getAllTrains().subscribe(data => {
+    this.adminService.getAllTrains('past').subscribe(data => {
       this.trains=data;
     });
   }
@@ -23,12 +23,12 @@ export class ShowTrainsComponent implements OnInit {
   gg() {
     if (this.label == 1) {
       this.label = 0;
-      this.adminService.getAllTrains().subscribe(data => {
+      this.adminService.getAllTrains('past').subscribe(data => {
         this.trains = data;
         console.log('all',data)});
     } else {
       console.log('act');
-      this.adminService.getAllActTrains().subscribe(data=>{
+      this.adminService.getAllTrains('act').subscribe(data=>{
         this.trains = data;
         console.log(data)
       })

@@ -26,7 +26,7 @@ export class ShowPassengersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adminService.getAllTrains().subscribe(data => {
+    this.adminService.getAllTrains('all').subscribe(data => {
       this.options = data;
     });
   }

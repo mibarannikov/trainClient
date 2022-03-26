@@ -56,6 +56,7 @@ export class AddstationComponent implements OnInit {
   getStations(): void {
     console.log("entry")
     this.stationService.getStations().subscribe(data => {
+      this.stations=data;
       this.stationsForEdite = data;
       this.stationsForAddCanGet = data;
       console.log('stations', data);
@@ -154,12 +155,26 @@ export class AddstationComponent implements OnInit {
   }
 
   addCanGetToStationEdit() {
-    console.log(this.stationForEdit.canGetStation)
     this.stationForEdit.canGetStation = this.stationForEdit.canGetStation.filter(s => s != this.myControl2.value);
-    console.log(this.stationForEdit.canGetStation)
     this.stationForEdit.canGetStation.push(this.myControl2.value);
-    console.log(this.stationForEdit.canGetStation)
-    console.log(this.stationForEdit.canGetStation);
     this.addStCan = !this.addStCan;
+  }
+
+  saveChange() {
+   this.stationForEdit.nameStation=this.nameStationEdit.value;
+   this.stationForEdit.latitude=this.latEdit.value;
+   this.stationForEdit.longitude=this.lonEdit.value;
+   console.log('станция на отправку',this.stationForEdit);
+   this.adminService.stationEdit(this.stationForEdit).subscribe(
+     data=>{
+       console.log('измененная станция', data);
+     }, error => {
+       this.notificationService.showSnakBar(error);
+       this.notificationService.showSnakBar('что-то пошло не так');
+     }
+   )
+
+
+
   }
 }

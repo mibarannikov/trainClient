@@ -17,8 +17,8 @@ export class TicketService {
     return this.http.get(TICKET_API);
   }
 
-  getEmptySeatsTrain(trainNumber: any, startStation: string, endStation: string):Observable<any> {
-    return this.http.get(TICKET_API+"searchseats?train="+trainNumber+'&start='+startStation+'&end='+endStation);
+  getEmptySeatsTrain(trainNumber: any, wagonNumber:number, startStation: string, endStation: string):Observable<any> {
+    return this.http.get(TICKET_API+"searchseats?train="+trainNumber+'&wagon='+wagonNumber+'&start='+startStation+'&end='+endStation);
 
   }
 

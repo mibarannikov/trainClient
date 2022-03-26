@@ -6,11 +6,11 @@
     <mat-card-subtitle style="color: black">
       <h3>
         <div>Станция отправления: {{this.trainInfo.startForTicket}}</div>
-        <div> Время отправления: {{this.ticketPoints[0].arrivalTime}}</div>
+        <div> Время отправления: {{this.ticketPoints[0].arrivalTime | date:'dd.MM.yyyy HH:mm '}}</div>
       </h3>
       <h3>
         <div>Станция прибытия: {{this.trainInfo.endForTicket}}</div>
-        <div> Время прибытия: {{this.ticketPoints[this.ticketPoints.length-1].arrivalTime}}</div>
+        <div> Время прибытия: {{this.ticketPoints[this.ticketPoints.length-1].arrivalTime | date:'dd.MM.yyyy HH:mm '}}</div>
       </h3>
     </mat-card-subtitle>
     <mat-card-subtitle>
@@ -23,6 +23,7 @@
 
       </span>
     </mat-card-subtitle>
+    <h2>Вагон №{{this.trainInfo.wagonNumberForByTicket}}</h2>
 <h2>Свободные места</h2>
     <mat-radio-group
       aria-labelledby="example-radio-group-label"

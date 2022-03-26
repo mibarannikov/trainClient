@@ -57,7 +57,6 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     this.createRequestTrainForm();
     this.stationService.getStations().subscribe(data => {
-      console.log('data', data);
       for (var s of data) {
         this.options1.push(s.nameStation);
         this.options.push(s.nameStation);
@@ -108,7 +107,7 @@ export class IndexComponent implements OnInit {
     console.log('end', this.trainInfoService.endForTicket);
     console.log('train', this.trainInfoService.trainForTicket);
     this.trainInfoService.trainIdForByTicket = trainId;
-    this.router.navigate(['ticket']);
+    this.router.navigate(['wagons']);
   }
 
 
@@ -117,12 +116,13 @@ export class IndexComponent implements OnInit {
     this.end = this.myControl1.value
     this.trainService.searchTrains(this.myControl.value, this.myControl1.value, this.dateStartControl.value, this.dateEndControl.value)
       .subscribe(data => {
-        this.trains = data
-        for (let t of this.trains) {
-          console.log('befor', t.pointsOfSchedule);
-          t.pointsOfSchedule.sort((a, b) => a.arrivalTime > b.arrivalTime ? 1 : -1);
-          console.log('after', t.pointsOfSchedule);
-        }
+        this.trains = data;
+        console.log(data);
+        // for (let t of this.trains) {
+        //   console.log('befor', t.pointsOfSchedule);
+        //   t.pointsOfSchedule.sort((a, b) => a.arrivalTime > b.arrivalTime ? 1 : -1);
+        //   console.log('after', t.pointsOfSchedule);
+        // }
       })
   }
 
@@ -151,27 +151,39 @@ export class IndexComponent implements OnInit {
         for (let tr of this.trainsForSchedule) {
           let arrPoint: PointOfSchedule | undefined = tr.pointsOfSchedule.find(p => p.nameStation === this.myControl2.value);
           // @ts-ignore
-          let datef: Date = new Date(arrPoint.arrivalTime)
-          datef.setMinutes(datef.getMinutes() + 5);
-          console.log('detef+5', datef.setHours(datef.getHours() + 3))
-          console.log('ISO', datef.toISOString())
-          // @ts-ignore
-          console.log(this.arrdep)
-          // @ts-ignore
-          let statuss
-          // @ts-ignore
-          if ((new Date(arrPoint.arrivalTime) < new Date()) && (datef > new Date())) {
-            statuss = 'Прибыл';
-          } else {
-            statuss = 'Ожидается прибытие'
+          let status
+
+          switch (arrPoint?.delayed) {
+            case 0: {
+              if ((new Date(arrPoint.arrivalTime) < new Date()) && (new Date(arrPoint.departureTime) > new Date())) {
+                status = 'Прибыл';
+              } else {
+                status = 'Ожидается прибытие';
+              }
+              break;
+            }
+            case 1: {
+              if ((new Date(arrPoint.arrivalTime) < new Date()) && (new Date(arrPoint.departureTime) > new Date())) {
+                status = 'Прибыл';
+              } else {
+                status = 'Задерживается';
+              }
+              break;
+            }
+            case 3: {
+              status = 'Отменен';
+              break;
+            }
+            default: {
+              status = "нет информации";
+              break;
+            }
           }
 
-
           // @ts-ignore
-          this.arrdep.push({arr: arrPoint.arrivalTime, dep: arrPoint.departureTime, status: statuss})
+          this.arrdep.push({arr: arrPoint.arrivalTime, dep: arrPoint.departureTime, status: status})
         }
       }
-      console.log('массив прибытия отправления', this.arrdep)
       this.isLoaded = true;
     })
 
@@ -183,17 +195,17 @@ export class IndexComponent implements OnInit {
   }
 
   onInputStart(event: any) {
-      this.stationService.getSearchStations(event.target.value).subscribe(data=>{
-        this.options=[];
-        for (let s of data) {
-          this.options.push(s.nameStation);
-        }
-      })
+    this.stationService.getSearchStations(event.target.value).subscribe(data => {
+      this.options = [];
+      for (let s of data) {
+        this.options.push(s.nameStation);
+      }
+    })
   }
 
   onInputEnd(event: any) {
-    this.stationService.getSearchStations(event.target.value).subscribe(data=>{
-      this.options1=[];
+    this.stationService.getSearchStations(event.target.value).subscribe(data => {
+      this.options1 = [];
       for (let s of data) {
         this.options1.push(s.nameStation);
       }
@@ -202,13 +214,19 @@ export class IndexComponent implements OnInit {
 
   onInputSchedule(event: any) {
     console.log(event)
-    this.stationService.getSearchStations(event.target.value).subscribe(data=>{
-      this.options2=[];
+    this.stationService.getSearchStations(event.target.value).subscribe(data => {
+      this.options2 = [];
       for (let s of data) {
         this.options2.push(s.nameStation);
       }
-      console.log('результат', this.options2)
-    })
+    });
+  }
+
+  swap() {
+    let a = this.myControl.value;
+    this.myControl.setValue(this.myControl1.value);
+    this.myControl1.setValue(a);
+    this.giveTrains();
 
   }
 }

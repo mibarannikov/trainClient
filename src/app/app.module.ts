@@ -38,6 +38,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import { ShowPassengersComponent } from './layout/admin/show-passengers/show-passengers.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import {authErrorInterceptorProvider} from "./helper/error-interceptor.service";
+import { WagonSelectionComponent } from './layout/ticket/wagon-selection/wagon-selection.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import {authErrorInterceptorProvider} from "./helper/error-interceptor.service";
     AddTrainComponent,
     ShowTrainsComponent,
     ShowPassengersComponent,
+    WagonSelectionComponent,
   ],
     imports: [
         BrowserModule,

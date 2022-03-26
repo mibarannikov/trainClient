@@ -1,8 +1,8 @@
 <div style="text-align: center">
-  <h1>Добавление поезда</h1>
+  <h1>Создание поезда</h1>
 </div>
 <form [formGroup]="addTrainForm">
-  <div style="text-align: center">
+  <div style="text-align: center" appearance="outline">
     <mat-form-field appearance="outline">
       <mat-label>Номер поезда</mat-label>
       <input type="text" matInput formControlName="trainNumber">
@@ -11,10 +11,10 @@
       <mat-label> Скорость поезда</mat-label>
       <input type="text" matInput formControlName="trainSpeed">
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label> Количество мест</mat-label>
-      <input type="text" matInput formControlName="sumSeats">
-    </mat-form-field>
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label> Количество мест</mat-label>-->
+<!--      <input type="text" matInput formControlName="sumSeats">-->
+<!--    </mat-form-field>-->
     <button style="width: 15%" mat-flat-button color="primary" (click)="setNumber()" [disabled]="addTrainForm.invalid">
       Установить номер
     </button>
@@ -25,11 +25,78 @@
 </form>
 
 
+<div *ngIf="setTrainNumberFlag"  >
+  <h1 style="text-align: center">Формирование состава</h1>
+<!--<div *ngIf="train.wagons">-->
+  <div *ngFor="let wag of train.wagons; let i=index" style=" display:inline-block;">
+    <mat-card style="margin-left:1rem; border: black solid; width: content-box; height: max-content;"
+              appearance="outline">
+      <div style="text-align: center ; display: inline">
+      <h2 style="display: inline">  №{{i+1}}</h2>
+        <span>  {{wag.name}}</span>
+
+      </div>
+      <mat-icon style="margin-bottom: 0px; display: inline" (click)="deleteWagon(i)">
+        cancel
+      </mat-icon>
+    </mat-card>
+  </div>
+<!--</div>-->
+  <button *ngIf="!addWagonFlag" mat-button style="margin-bottom: 0px;display:inline;" (click)="addWagon()">
+    <mat-icon style="margin-bottom: 0px;size: auto;">
+      add
+    </mat-icon>
+    добавить
+  </button>
+  <div *ngIf="addWagonFlag" style=" display:inline;">
+
+
+
+<!--    <mat-form-field style="margin-left: 1rem" appearance="outline">-->
+<!--      <mat-label style="margin-left: 1rem">Тип вагона</mat-label>-->
+<!--      <input style="margin-left: 1rem"-->
+<!--             type="text"-->
+<!--             placeholder="Pick one"-->
+<!--             aria-label="Number"-->
+<!--             matInput-->
+<!--             [formControl]="myControl2"-->
+<!--             [matAutocomplete]="auto1"-->
+<!--             (input)="onInputAddWagon($event)">-->
+<!--      <mat-autocomplete #auto1="matAutocomplete">-->
+<!--        <mat-option *ngFor="let wag of wagons" [value]="wag">-->
+<!--          {{wag}}-->
+<!--        </mat-option>-->
+<!--      </mat-autocomplete>-->
+<!--    </mat-form-field>-->
+
+
+    <mat-form-field appearance="outline">
+      <mat-label> Тип вагона</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let wag of wagons" [value]="wag"
+                    (onSelectionChange)="onInputAddWagon($event)">     <!-- *ngFor="let food of foods" [value]="food.value"-->
+          {{wag}}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+    <button mat-button (click)="addWagonToTrain()" style="height: inherit">
+      <mat-icon style="margin-bottom: 0px;height: inherit">
+        add
+      </mat-icon>
+      Добавить
+    </button>
+
+
+  </div>
+</div>
+
+
 <div *ngIf="setTrainNumberFlag">
   <h1 style="text-align: center"> Добавьте станции следования</h1>
   <div style="text-align: center">
     <mat-form-field appearance="outline">
-      <mat-label> Cтанция </mat-label>
+      <mat-label> Cтанция</mat-label>
       <mat-select>
         <mat-option *ngFor="let st of this.stationsName;let i = index" [value]="st"
                     (onSelectionChange)="setArrivalStation($event)">
@@ -56,7 +123,7 @@
     <button style="width: 15%"
             mat-flat-button color="primary"
             (click)="createTrain()"
-            [disabled]="this.train.pointsOfSchedule.length<2">
+            [disabled]="(this.train.pointsOfSchedule.length<2)||(this.train.sumSeats<1)">
       Создать поезд
     </button>
   </div>

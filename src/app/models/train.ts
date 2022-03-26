@@ -1,4 +1,5 @@
 import {PointOfSchedule} from "./pointOfSchedule";
+import {Wagon} from "./wagon";
 
 export interface Train {
   id?: number;
@@ -6,6 +7,7 @@ export interface Train {
   departureTime: string;
   arrivalTimeEnd: string;
   trainSpeed: number;
+  wagons: Wagon[];
   sumSeats: number;
   amountOfEmptySeats?: number;
   pointsOfSchedule: PointOfSchedule[];

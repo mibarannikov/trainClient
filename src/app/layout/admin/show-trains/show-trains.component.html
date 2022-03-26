@@ -1,10 +1,10 @@
 <mat-tab-group (selectedIndexChange)="gg()">
- <mat-tab label="Все поезда">
-<!--    <mat-paginator [length]="100"-->
-<!--                   [pageSize]="10"-->
-<!--                   [pageSizeOptions]="[5, 10, 25, 100]"-->
-<!--                   aria-label="Select page">-->
-<!--    </mat-paginator>-->
+  <mat-tab label="Архив поездов">
+    <!--    <mat-paginator [length]="100"-->
+    <!--                   [pageSize]="10"-->
+    <!--                   [pageSizeOptions]="[5, 10, 25, 100]"-->
+    <!--                   aria-label="Select page">-->
+    <!--    </mat-paginator>-->
     <div *ngIf="trains; else und">
       <div *ngIf="trains.length!=0; else empty">
         <mat-card class="index-page" *ngFor="let tr of trains; let i = index">
@@ -17,20 +17,22 @@
           <span style="font-weight: bold"> Маршрут:</span>
 
           <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
-        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yy HH:mm '}}
-            --></span>
+        <span>{{p.nameStation}} </span>
+            <span>{{p.arrivalTime | date:'dd.MM.yy HH:mm '}}</span>
+            <span>{{p.delayed}}</span>
+             <span> --></span>
 
       </span>
-<!--          <mat-card-actions align="start">-->
+          <mat-card-actions align="start">
 
-<!--            <button *ngIf="true" mat-button class="not-liked">-->
-<!--              &lt;!&ndash; [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  &ndash;&gt;-->
-<!--              <mat-icon>-->
-<!--               train-->
-<!--              </mat-icon>-->
-<!--              Редактировать поезд-->
-<!--            </button>-->
-<!--          </mat-card-actions>-->
+            <button *ngIf="true" mat-button class="not-liked">
+              <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+              <mat-icon>
+                train
+              </mat-icon>
+              Редактировать поезд
+            </button>
+          </mat-card-actions>
 
 
         </mat-card>
@@ -61,19 +63,20 @@
 
           <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
 
-        <span>{{p.nameStation}} </span> <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
-            --></span>
+            <span>{{p.nameStation}} </span>
+            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}_</span>
+            <span>{{p.delayed}} --></span>
 
       </span>
-<!--          <mat-card-actions align="start">-->
-<!--            <button *ngIf="true" mat-button class="not-liked">-->
-<!--              &lt;!&ndash; [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  &ndash;&gt;-->
-<!--              <mat-icon>-->
-<!--                train-->
-<!--              </mat-icon>-->
-<!--              Редактировать поезд-->
-<!--            </button>-->
-<!--          </mat-card-actions>-->
+          <mat-card-actions align="start">
+            <button *ngIf="true" mat-button class="not-liked">
+              <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+              <mat-icon>
+                train
+              </mat-icon>
+              Редактировать поезд
+            </button>
+          </mat-card-actions>
 
 
         </mat-card>

@@ -18,6 +18,7 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+          <mat-icon (click)="swap()">loop</mat-icon>
           <mat-form-field appearance="outline">
             <mat-label>Станция прибытия</mat-label>
             <input type="text"
@@ -33,12 +34,13 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" style="margin-left: 2rem">
             <mat-label>Начало периода</mat-label>
             <input matInput type="datetime-local" [formControl]="dateStartControl">
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-          <mat-form-field appearance="outline">
+          <mat-icon>remove</mat-icon>
+          <mat-form-field  appearance="outline">
             <mat-label>Конец периода</mat-label>
             <input matInput type="datetime-local" [formControl]="dateEndControl">
             <mat-datepicker #picker1></mat-datepicker>
