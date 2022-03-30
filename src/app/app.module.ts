@@ -39,6 +39,7 @@ import { ShowPassengersComponent } from './layout/admin/show-passengers/show-pas
 import {MatGridListModule} from "@angular/material/grid-list";
 import {authErrorInterceptorProvider} from "./helper/error-interceptor.service";
 import { WagonSelectionComponent } from './layout/ticket/wagon-selection/wagon-selection.component';
+import { EditTrainComponent } from './layout/admin/show-trains/edit-train/edit-train.component';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { WagonSelectionComponent } from './layout/ticket/wagon-selection/wagon-s
     ShowTrainsComponent,
     ShowPassengersComponent,
     WagonSelectionComponent,
+    EditTrainComponent,
   ],
     imports: [
         BrowserModule,

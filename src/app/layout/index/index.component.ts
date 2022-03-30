@@ -117,7 +117,7 @@ export class IndexComponent implements OnInit {
     this.trainService.searchTrains(this.myControl.value, this.myControl1.value, this.dateStartControl.value, this.dateEndControl.value)
       .subscribe(data => {
         this.trains = data;
-        console.log(data);
+        console.log('trains',data);
         // for (let t of this.trains) {
         //   console.log('befor', t.pointsOfSchedule);
         //   t.pointsOfSchedule.sort((a, b) => a.arrivalTime > b.arrivalTime ? 1 : -1);
@@ -154,7 +154,7 @@ export class IndexComponent implements OnInit {
           let status
 
           switch (arrPoint?.delayed) {
-            case 0: {
+            case 'schedule': {
               if ((new Date(arrPoint.arrivalTime) < new Date()) && (new Date(arrPoint.departureTime) > new Date())) {
                 status = 'Прибыл';
               } else {
@@ -162,7 +162,7 @@ export class IndexComponent implements OnInit {
               }
               break;
             }
-            case 1: {
+            case 'running_with_errors': {
               if ((new Date(arrPoint.arrivalTime) < new Date()) && (new Date(arrPoint.departureTime) > new Date())) {
                 status = 'Прибыл';
               } else {
@@ -170,7 +170,7 @@ export class IndexComponent implements OnInit {
               }
               break;
             }
-            case 3: {
+            case 'cancel': {
               status = 'Отменен';
               break;
             }

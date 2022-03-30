@@ -13,6 +13,7 @@ export class TrainInfoService {
   public endForTicket: string;
   public dateNow: Date = new Date();
   public wagonNumberForByTicket: number;
+  public trainForEdite:Train;
 
 
   constructor() {

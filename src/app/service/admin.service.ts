@@ -49,4 +49,20 @@ export class AdminService {
   getAllActTrains(): Observable<any> {
     return this.http.get(ADMIN_API + 'train/allact');
   }
+
+  findTrain(trainNumber:number) :Observable<any>{
+    return this.http.get(ADMIN_API+'train/find?trainNumber='+trainNumber);
+  }
+
+  rollBackTrain(train:Train):Observable<any>{
+    console.log('rollback')
+    return this.http.put(ADMIN_API+'train/rollback',train);
+  }
+
+  updateTrain(train:Train):Observable<any>{
+    console.log('update')
+    return  this.http.put(ADMIN_API+'train/update',train)
+
+  }
+
 }

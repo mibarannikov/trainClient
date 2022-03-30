@@ -42,7 +42,7 @@
           <mat-icon>remove</mat-icon>
           <mat-form-field  appearance="outline">
             <mat-label>Конец периода</mat-label>
-            <input matInput type="datetime-local" [formControl]="dateEndControl">
+            <input [min]="dateStartControl.value" matInput type="datetime-local" [formControl]="dateEndControl">
             <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
         </div>
@@ -51,6 +51,7 @@
                   [disabled]="myControl.invalid || myControl1.invalid||dateStartControl.invalid||dateEndControl.invalid">
             Найти
           </button>
+
         </div>
       </form>
     </div>
@@ -68,8 +69,9 @@
           <span appearance="none" *ngFor="let p of tr.pointsOfSchedule">
         <span
           [ngStyle]="{'font-weight':(p.nameStation==this.start)||(p.nameStation==this.end)?'bold':'inherit'}">{{p.nameStation}} </span>
-            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}
-              --></span>
+            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</span>
+            <mat-icon style="transform: scale(0.80);vertical-align: middle;">{{p.delayed}}</mat-icon>
+            <span>--></span>
 
       </span>
           <mat-card-actions align="start">

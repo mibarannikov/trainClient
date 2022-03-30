@@ -1,0 +1,92 @@
+<h1 style="text-align: center; margin-top: 1rem">Редактирование расписания поезда</h1>
+<div *ngIf="(this.trainInfoService.trainForEdite)&&(editeTrain);else notTrain">
+
+  <div>
+    <h1 style="text-align: center">Поезд №{{editeTrain.trainNumber}}</h1>
+
+
+    <button style="width: 15% ;display: inline;text-align: center" mat-flat-button color="primary" (click)="cancel()">
+      Отмена
+    </button>
+  </div>
+  <div *ngFor="let point of editeTrain.pointsOfSchedule; let i=index" style=" display:inline-block;">
+    <mat-card style="margin-left: 1rem;margin-top: 1rem">
+
+      <div *ngIf="editToggle[i]; else edit" style="margin-bottom: 0px">
+        <mat-card-subtitle style=" margin-bottom: 0px; margin-top: 0px; display: inline">{{i + 1}}</mat-card-subtitle>
+        <h3 style="display: inline;margin-left: 1rem; margin-bottom: 0px; margin-top: 0px;">{{point.nameStation}}</h3>
+        <mat-card-subtitle style="margin-top: 5px;margin-bottom: 0px">Прибытие <span>{{point.arrivalTimeInit}}</span></mat-card-subtitle>
+        <h3 style="margin-bottom: 0px">{{point.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</h3>
+        <mat-card-subtitle style="margin-top: 5px;margin-bottom: 0px">Отправление <span>{{point.departureTimeInit}}</span></mat-card-subtitle>
+        <h3 style="margin-bottom: 0px;">{{point.departureTime | date:'dd.MM.yyyy HH:mm '}}</h3>
+        <mat-card-subtitle style="margin-top: 5px;margin-bottom: 0px;display: inline; vertical-align: middle">Статус
+        </mat-card-subtitle>
+        <mat-icon style="display: inline">{{point.delayed}}</mat-icon>
+        <mat-card-actions align="start" style="margin-bottom: 0px">
+          <button *ngIf="true" mat-button class="not-liked" (click)="editPoint(i)">
+            <mat-icon>
+              edit
+            </mat-icon>
+            Редактировать
+          </button>
+        </mat-card-actions>
+      </div>
+      <ng-template style="margin-bottom: 0px;margin-top: 0px" #edit>
+
+        <div style="margin-bottom: 0px;margin-top: 0px">
+          <mat-card-subtitle style=" margin-bottom: 0px; margin-top: 0px; display: inline">{{i + 1}}</mat-card-subtitle>
+          <h3 style="display: inline;margin-left: 1rem; margin-bottom: 0px; margin-top: 0px;">{{point.nameStation}}</h3>
+        </div>
+
+        <div style="margin-bottom: 0px;margin-top: 0px">
+          <mat-form-field appearance="outline" style="margin-bottom: 0px;margin-top: 0px">
+            <mat-label>Время прибытия</mat-label>
+            <input matInput type="datetime-local" placeholder="Дата отправления" [value]="point.arrivalTime"
+                   (input)="dateArrival($event,i)"> <!-- [value]="this.addArrivalTime" -->
+            <!--          (input)="dateArrival($event)"-->
+          </mat-form-field>
+        </div>
+
+        <div style="margin-bottom: 0px;margin-top: 0px">
+          <mat-form-field appearance="outline" style="margin-bottom: 0px;margin-top: 0px">
+            <mat-label>Время отправления</mat-label>
+            <input  [min]="point.arrivalTime" matInput type="datetime-local" placeholder="Дата отправления" [value]="point.departureTime"
+                   (input)="dateDeparture($event,i)">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-icon style="margin-left: 1rem">{{point.delayed}}</mat-icon>
+          <mat-card style="display: inline-block; margin-left: 1rem;border: gray solid;">
+            <mat-icon style="margin-left: 0rem" (click)="setSchedule(i)">
+              schedule
+            </mat-icon>
+            <mat-icon style="margin-left: 1rem" (click)="setDelay(i)">
+              running_with_errors
+            </mat-icon>
+            <mat-icon style="margin-left: 1rem" (click)="setCancel(i)">
+              cancel
+            </mat-icon>
+          </mat-card>
+
+        </div>
+        <button mat-button (click)="savePoint(i)" style="margin-bottom: 0px;margin-top: 0px">
+          Сохранить
+        </button>
+        <button mat-button (click)="cancelEdit(i)" style="margin-bottom: 0px;margin-top: 0px">
+           Отмена
+        </button>
+
+      </ng-template>
+    </mat-card>
+
+
+  </div>
+
+
+</div>
+<ng-template #notTrain style="text-align: center">
+  <a style="text-align: center" routerLink="/trains">Выберете поезд для
+    редактирования</a>
+
+
+</ng-template>

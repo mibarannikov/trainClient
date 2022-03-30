@@ -10,7 +10,6 @@ import {NotificationService} from "../../../service/notification.service";
 import {Ticket} from "../../../models/tiсket";
 
 
-
 @Component({
   selector: 'app-buy-ticket',
   templateUrl: './buy-ticket.component.html',
@@ -24,6 +23,7 @@ export class BuyTicketComponent implements OnInit {
   train!: Train;
   buyTicket!: FormGroup;
   ticketPoints: PointOfSchedule[] = [];
+  price:any;
 
   constructor(private trainService: TrainService,
               private fb: FormBuilder,
@@ -54,14 +54,27 @@ export class BuyTicketComponent implements OnInit {
         this.trainInfo.startForTicket,
         this.trainInfo.endForTicket).subscribe(data => {
         this.seats = data;
+
       });
+      this.ticketService.priceCalculation(this.trainInfo.trainForTicket.trainNumber,
+        this.trainInfo.wagonNumberForByTicket,
+        this.trainInfo.startForTicket,
+        this.trainInfo.endForTicket).subscribe(data=>{
+          console.log('--------------------',data)
+          this.price =data;
+          console.log(this.price);
+        }
+      );
+
+
     }
   }
 
   buyingTicket() {
     let d = new Date(this.buyTicket.value.dateOfBirth)
-    d.setHours(d.getHours()+3)
+    d.setHours(d.getHours() + 3)
     this.ticketService.buyTicket({
+        wagonNumber: this.trainInfo.wagonNumberForByTicket,
         seatNumber: this.changeSeat,
         firstnamePassenger: this.buyTicket.value.firstname,
         lastnamePassenger: this.buyTicket.value.lastname,
@@ -85,7 +98,7 @@ export class BuyTicketComponent implements OnInit {
         this.seats = data;
       });
     });
-    this.changeSeat='';
+    this.changeSeat = '';
     this.buyTicket.reset();
   }
 }

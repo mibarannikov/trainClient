@@ -11,8 +11,9 @@
       <mat-card class="post-card" *ngFor="let ticket of tickets">
         <mat-card-title>БИЛЕТ</mat-card-title>
         <hr>
-        <mat-card-title>Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
-        <mat-card-title>Место №{{ticket.seatNumber}}</mat-card-title>
+        <mat-card-title >Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
+        <mat-card-title style="display: inline;margin-top: 2rem">Вагон №{{ticket.wagonNumber}}</mat-card-title>
+        <mat-card-title  style="display: inline;margin-top: 1rem; margin-left: 1rem">Место №{{ticket.seatNumber}}</mat-card-title>
         <mat-card-subtitle style="color: black">
           <h3>
             <div>Станция отправления: {{ticket.nameStations[0].nameStation}}</div>
@@ -51,8 +52,9 @@
       <mat-card class="post-card" *ngFor="let ticket of tickets">
         <mat-card-title>БИЛЕТ</mat-card-title>
         <hr>
-        <mat-card-title>Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
-        <mat-card-title>Место №{{ticket.seatNumber}}</mat-card-title>
+        <mat-card-title >Поезд №{{ticket.numberTrainOwner}}</mat-card-title>
+        <mat-card-title style="display: inline;margin-top: 2rem">Вагон №{{ticket.wagonNumber}}</mat-card-title>
+        <mat-card-title  style="display: inline;margin-top: 1rem; margin-left: 1rem">Место №{{ticket.seatNumber}}</mat-card-title>
         <mat-card-subtitle style="color: black">
           <h3>
             <div>Станция отправления: {{ticket.nameStations[0].nameStation}}</div>

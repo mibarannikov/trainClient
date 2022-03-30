@@ -127,19 +127,42 @@
       Создать поезд
     </button>
   </div>
-  <div>
-    <hr>
+  <div style="margin-top: 0px">
+    <hr style="margin-top: 0px">
     <h1> Поезд № {{ this.addTrainForm.value.trainNumber}}</h1>
   </div>
-  <div>
+
+
+<!--  <div *ngFor="let wag of train.wagons; let i=index" style=" display:inline-block;">-->
+<!--    <mat-card style="margin-left:1rem; border: black solid; width: content-box; height: max-content;"-->
+<!--              appearance="outline">-->
+<!--      <div style="text-align: center ; display: inline">-->
+<!--        <h2 style="display: inline">  №{{i+1}}</h2>-->
+<!--        <span>  {{wag.name}}</span>-->
+
+<!--      </div>-->
+<!--      <mat-icon style="margin-bottom: 0px; display: inline" (click)="deleteWagon(i)">-->
+<!--        cancel-->
+<!--      </mat-icon>-->
+<!--    </mat-card>-->
+<!--  </div>-->
+
+
+
+  <div style="margin-bottom: 0px">
     <h1> Станции следования:</h1>
   </div>
-  <div *ngIf="!emptyPoint">
-    <mat-card *ngFor="let point of train.pointsOfSchedule">
-      <h2>{{point.nameStation}}</h2>
-      <h2>{{point.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</h2>
-      <h2>{{point.departureTime | date:'dd.MM.yyyy HH:mm '}}</h2>
+  <div *ngIf="!emptyPoint" >
+    <div *ngFor="let point of train.pointsOfSchedule; let i=index" style=" display:inline-block;">
+    <mat-card style="margin-left: 1rem;">
+      <mat-card-subtitle style=" margin-bottom: 0px; margin-top: 0px; display: inline">{{i+1}}</mat-card-subtitle>
+      <h3 style="display: inline;margin-left: 1rem; margin-bottom: 0px; margin-top: 0px;">{{point.nameStation}}</h3>
+      <mat-card-subtitle style="margin-top: 5px;margin-bottom: 0px">Прибытие</mat-card-subtitle>
+      <h3 style="margin-bottom: 0px">{{point.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</h3>
+      <mat-card-subtitle style="margin-top: 5px;margin-bottom: 0px">Отправление</mat-card-subtitle>
+      <h3 style="margin-bottom: 0px; ma">{{point.departureTime | date:'dd.MM.yyyy HH:mm '}}</h3>
     </mat-card>
+  </div>
   </div>
 </div>
 

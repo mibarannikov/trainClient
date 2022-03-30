@@ -60,7 +60,7 @@
         </div>
       </mat-card-content>
     </form>
-
+<h1 *ngIf="this.price">Стоимость:{{this.price.price}}</h1>
     <mat-card-actions>
       <button mat-button class="but" [disabled]="(buyTicket.invalid)||(!changeSeat)" (click)="buyingTicket()">
         <mat-icon>

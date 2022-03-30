@@ -36,9 +36,10 @@
     <mat-card class="index-page" *ngFor="let tck of ticketsReg; let i = index">
       <mat-card-header style="text-align: center">
 
-        <mat-card-title>Пассажир:{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
-        <mat-card-subtitle>Дата рождения:{{tck.dateOfBirth}}</mat-card-subtitle>
-        <mat-card-subtitle> Место№{{tck.seatNumber}}</mat-card-subtitle>
+        <mat-card-title style="display: inline">{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
+        <mat-card-subtitle style="display: inline; margin-left: 1rem">Дата рождения:{{tck.dateOfBirth}}</mat-card-subtitle>
+        <mat-card-subtitle style="display: inline; margin-left: 1rem"> Вагон№{{tck.wagonNumber}}</mat-card-subtitle>
+        <mat-card-subtitle style="display: inline; margin-left: 1rem"> Место№{{tck.seatNumber}}</mat-card-subtitle>
 
       </mat-card-header>
 
@@ -68,9 +69,10 @@
         <mat-card class="index-page" *ngFor="let tck of ticketsAll; let i = index">
           <mat-card-header style="text-align: center">
 
-            <mat-card-title>Пассажир:{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
-            <mat-card-subtitle>Дата рождения:{{tck.dateOfBirth}}</mat-card-subtitle>
-            <mat-card-subtitle> Место№{{tck.seatNumber}}</mat-card-subtitle>
+            <mat-card-title style="display: inline">{{tck.firstnamePassenger + ' '}} {{tck.lastnamePassenger + ' '}}</mat-card-title>
+            <mat-card-subtitle style="display: inline; margin-left: 1rem">Дата рождения:{{tck.dateOfBirth}}</mat-card-subtitle>
+            <mat-card-subtitle style="display: inline; margin-left: 1rem"> Вагон№{{tck.wagonNumber}}</mat-card-subtitle>
+            <mat-card-subtitle style="display: inline; margin-left: 1rem"> Место№{{tck.seatNumber}}</mat-card-subtitle>
 
           </mat-card-header>
 

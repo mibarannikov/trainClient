@@ -5,5 +5,5 @@ export class PointOfSchedule {
   arrivalTimeInit?:string;
   departureTime: string;
   departureTimeInit?:string;
-  delayed?: number;
+  delayed?: string;
 }

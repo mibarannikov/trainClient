@@ -1,5 +1,44 @@
 <mat-tab-group (selectedIndexChange)="gg()">
-  <mat-tab label="Архив поездов">
+
+  <mat-tab label="Архив">
+    <div *ngIf="trains; else und">
+      <div *ngIf="trains.length!=0; else empty">
+        <mat-card class="index-page" *ngFor="let tr of trains; let i = index">
+          <mat-card-header style="text-align: center">
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Поезд №{{tr.trainNumber}}</mat-card-title>
+
+            <mat-card-subtitle>Скорость поезда:{{this.tr.trainSpeed}}</mat-card-subtitle>
+            <mat-card-subtitle>Количество мест в поезде:{{this.tr.sumSeats}}</mat-card-subtitle>
+
+          </mat-card-header>
+
+          <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
+
+            <span>{{p.nameStation}} </span>
+            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</span>
+             <mat-icon style="transform: scale(0.80);vertical-align: middle;">{{p.delayed}}</mat-icon>
+             <span> --></span>
+
+      </span>
+
+
+
+        </mat-card>
+      </div>
+
+      <ng-template style="text-align: center" #empty>
+        <h1 style="text-align: center">Поездов нет</h1></ng-template>
+
+
+    </div>
+    <ng-template #und>
+      <h1 style="text-align: center">нет поездов</h1>
+    </ng-template>
+
+
+  </mat-tab>
+  <mat-tab label="Актуальные">
     <!--    <mat-paginator [length]="100"-->
     <!--                   [pageSize]="10"-->
     <!--                   [pageSizeOptions]="[5, 10, 25, 100]"-->
@@ -17,22 +56,31 @@
           <span style="font-weight: bold"> Маршрут:</span>
 
           <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
-        <span>{{p.nameStation}} </span>
-            <span>{{p.arrivalTime | date:'dd.MM.yy HH:mm '}}</span>
-            <span>{{p.delayed}}</span>
+             <span>{{p.nameStation}} </span>
+            <span> {{p.arrivalTime | date:'dd.MM.yy HH:mm '}}</span>
+              <mat-icon style="transform: scale(0.80);vertical-align: middle;">{{p.delayed}}</mat-icon>
              <span> --></span>
 
       </span>
-          <mat-card-actions align="start">
 
-            <button *ngIf="true" mat-button class="not-liked">
-              <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+          <mat-card-actions align="start">
+            <button *ngIf="true" mat-button class="not-liked" (click)="editTrain(tr)">
               <mat-icon>
                 train
               </mat-icon>
               Редактировать поезд
             </button>
           </mat-card-actions>
+          <!--          <mat-card-actions align="start">-->
+
+          <!--            <button *ngIf="true" mat-button class="not-liked">-->
+          <!--              &lt;!&ndash; [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  &ndash;&gt;-->
+          <!--              <mat-icon>-->
+          <!--                train-->
+          <!--              </mat-icon>-->
+          <!--              Редактировать поезд-->
+          <!--            </button>-->
+          <!--          </mat-card-actions>-->
 
 
         </mat-card>
@@ -46,51 +94,6 @@
     <ng-template #und>
       <h1 style="text-align: center">нет поездов</h1>
     </ng-template>
-
-  </mat-tab>
-  <mat-tab label="Актуальные поезда">
-    <div *ngIf="trains; else und">
-      <div *ngIf="trains.length!=0; else empty">
-        <mat-card class="index-page" *ngFor="let tr of trains; let i = index">
-          <mat-card-header style="text-align: center">
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Поезд №{{tr.trainNumber}}</mat-card-title>
-
-            <mat-card-subtitle>Скорость поезда:{{this.tr.trainSpeed}}</mat-card-subtitle>
-            <mat-card-subtitle>Количество мест в поезде:{{this.tr.sumSeats}}</mat-card-subtitle>
-
-          </mat-card-header>
-
-          <span appearance="outline" *ngFor="let p of tr.pointsOfSchedule">
-
-            <span>{{p.nameStation}} </span>
-            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}_</span>
-            <span>{{p.delayed}} --></span>
-
-      </span>
-          <mat-card-actions align="start">
-            <button *ngIf="true" mat-button class="not-liked">
-              <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
-              <mat-icon>
-                train
-              </mat-icon>
-              Редактировать поезд
-            </button>
-          </mat-card-actions>
-
-
-        </mat-card>
-      </div>
-
-      <ng-template style="text-align: center" #empty>
-        <h1 style="text-align: center">Поездов нет</h1></ng-template>
-
-
-    </div>
-    <ng-template #und>
-      <h1 style="text-align: center">нет поездов</h1>
-    </ng-template>
-
 
   </mat-tab>
 </mat-tab-group>

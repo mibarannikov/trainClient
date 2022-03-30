@@ -22,6 +22,10 @@ export class TicketService {
 
   }
 
+  priceCalculation(trainNumber: any, wagonNumber:number, startStation: string, endStation: string):Observable<any>{
+    return this.http.get(TICKET_API+"ticketprice?train="+trainNumber+'&wagon='+wagonNumber+'&start='+startStation+'&end='+endStation);
+  }
+
   buyTicket(ticket:Ticket): Observable<any> {
     return this.http.post(TICKET_API + 'buyticket', ticket);
   }
