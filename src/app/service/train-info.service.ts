@@ -14,6 +14,9 @@ export class TrainInfoService {
   public dateNow: Date = new Date();
   public wagonNumberForByTicket: number;
   public trainForEdite:Train;
+  public latForEdit:number;
+  public lonForEdit:number;
+  public trainForShowPassenger:Train;
 
 
   constructor() {

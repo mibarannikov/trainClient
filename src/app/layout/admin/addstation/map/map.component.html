@@ -1,0 +1,19 @@
+
+<div *ngIf="apiLoaded | async">
+  <google-map
+    (mapClick)="go($event)"
+    [options]="options">
+    <map-marker
+      [position]="markerPosition"
+      [options]="markerOptions">
+    </map-marker>
+  </google-map>
+</div>
+<div>
+<span style="margin-left: 1rem">Широта:{{markerPosition.lat}}</span>
+
+<button (click)="close()" style="margin-left: 1rem">Установить</button>
+  <button (click)="cancel()" style="margin-left: 1rem">Отмена</button>
+</div>
+<span style="margin-left: 1rem">Долгота:{{markerPosition.lng}}</span>
+

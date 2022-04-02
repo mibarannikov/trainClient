@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
+    window.sessionStorage.clear();
     this.authService.login({
       username: this.loginForm.value.username,
       password: this.loginForm.value.password

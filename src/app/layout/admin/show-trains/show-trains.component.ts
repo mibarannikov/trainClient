@@ -49,4 +49,9 @@ export class ShowTrainsComponent implements OnInit {
 
 
   }
+
+  showPassenger(tr: Train) {
+    this.trainInfoService.trainForShowPassenger=tr;
+    this.router.navigate(['passengers']);
+  }
 }

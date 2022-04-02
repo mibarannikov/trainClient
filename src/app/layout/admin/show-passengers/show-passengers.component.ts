@@ -5,6 +5,7 @@ import {AdminService} from "../../../service/admin.service";
 import {Train} from "../../../models/train";
 import {MatOptionSelectionChange} from "@angular/material/core";
 import {Ticket} from "../../../models/tiсket";
+import {TrainInfoService} from "../../../service/train-info.service";
 
 @Component({
   selector: 'app-show-passengers',
@@ -22,13 +23,17 @@ export class ShowPassengersComponent implements OnInit {
 
   label: number = 0;
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService,
+              private trainInfoService:TrainInfoService) {
   }
 
   ngOnInit(): void {
     this.adminService.getAllTrains('all').subscribe(data => {
       this.options = data;
     });
+    if (this.trainInfoService.trainForShowPassenger){
+
+    }
   }
 
   getTrain(event: MatOptionSelectionChange<any>) {

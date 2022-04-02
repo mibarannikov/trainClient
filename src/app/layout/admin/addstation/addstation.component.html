@@ -1,4 +1,4 @@
-<mat-tab-group (selectedIndexChange)="gg()">
+<mat-tab-group >
   <mat-tab label="Добавление станции">
 
     <h1 style="text-align: center">Добавление новой станции</h1>
@@ -10,12 +10,18 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label> Широта</mat-label>
-          <input matInput formControlName="latitude">
+          <input matInput formControlName="latitude" >  <!--[value]="latCreate.toString()"-->
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label> Долгота</mat-label>
-          <input matInput formControlName="longitude">
+          <input matInput formControlName="longitude" >  <!--[value]="lonCreate.toString()"-->
         </mat-form-field>
+        <button mat-button class="not-liked" (click)="openMapCreate()">
+          <mat-icon>
+            place
+          </mat-icon>
+          Указать на карте
+        </button>
       </div>
     </form>
     <h1 style="text-align: center">Укажите станции, до которых есть железнождорожное сообщение</h1>
@@ -46,6 +52,7 @@
         </div>
 
       </div>
+
       <div>
         <button style="width: 15%" mat-flat-button color="primary" (click)="addStation()"
                 [disabled]="requestAddStation.invalid">
@@ -101,13 +108,13 @@
         </mat-form-field>
         <mat-form-field style="margin-left: 3rem" appearance="outline">
           <mat-label> Широта</mat-label>
-          <input matInput [formControl]="latEdit">
+          <input matInput [formControl]="latEdit" >      <!-- [value]="this.trainInfoService.latForEdit.toString()"-->
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label> Долгота</mat-label>
-          <input matInput [formControl]="lonEdit">
+         <input matInput [formControl]="lonEdit" >        <!--    [value]="this.trainInfoService.lonForEdit.toString()"-->
         </mat-form-field>
-        <button mat-button class="not-liked" (click)="getFromMap()">
+        <button mat-button class="not-liked" (click)="openMap()">
           <mat-icon>
             place
           </mat-icon>
@@ -119,11 +126,9 @@
             <mat-card style="margin-left:1rem; border: black solid; width: content-box; height: max-content"
                       appearance="outline">
               <div style="text-align: center ; display: inline">{{canGetStation}}</div>
-<!--              <button mat-button style="margin-bottom: 0px; display: inline" (click)="deleteStationFromCanGetStation(i)">-->
                 <mat-icon style="margin-bottom: 0px; display: inline" (click)="deleteStationFromCanGetStation(i)">
                   cancel
                 </mat-icon>
-<!--              </button>-->
             </mat-card>
           </div>
           <button *ngIf="!addStCan" mat-button style="margin-bottom: 0px" (click)="addCanGetEdit()">

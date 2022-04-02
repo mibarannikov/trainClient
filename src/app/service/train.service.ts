@@ -17,6 +17,9 @@ export class TrainService {
     return this.http.get(TRAIN_API + 'search?start=' + start + '&end=' + end + '&tpstart=' + tpstart + '&tpend=' + tpend);
   }
 
+  searchTrainsTransfer(start: string, end: string, tpstart: string, tpend: string): Observable<any>{
+    return this.http.get(TRAIN_API + 'searchtransfer?start=' + start + '&end=' + end + '&tpstart=' + tpstart + '&tpend=' + tpend);
+  }
 
 }
 

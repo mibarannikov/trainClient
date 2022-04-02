@@ -40,7 +40,7 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
           <mat-icon>remove</mat-icon>
-          <mat-form-field  appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>Конец периода</mat-label>
             <input [min]="dateStartControl.value" matInput type="datetime-local" [formControl]="dateEndControl">
             <mat-datepicker #picker1></mat-datepicker>
@@ -86,12 +86,31 @@
         </mat-card>
       </div>
       <ng-template style="text-align: center" #empty>
-        <h1 style="text-align: center">Поездов нет</h1></ng-template>
+        <h1 style="text-align: center">Прямого сообщения нет</h1>
+        <div style="text-align: center">
+          <button style="width:content-box" mat-flat-button color="primary" (click)="giveTrainsWithTransfer()"
+                  [disabled]="myControl.invalid || myControl1.invalid||dateStartControl.invalid||dateEndControl.invalid">
+            Искать с пересадкой
+          </button>
+        </div>
+        <div *ngIf="vis">
+          <app-train-transfer
+            *ngFor="let trans of transfers"
+            [transfer]="trans">
+
+          </app-train-transfer>
+
+        </div>
+
+
+      </ng-template>
     </div>
     <ng-template #und>
       <h1 style="text-align: center">Найдите себе поезда</h1>
     </ng-template>
   </mat-tab>
+
+
   <mat-tab label="Расписание">
     <div><h1 style="margin-left: 1rem">Расписание по станции</h1></div>
     <mat-form-field appearance="outline">

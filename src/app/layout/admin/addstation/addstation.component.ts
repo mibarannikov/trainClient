@@ -5,6 +5,9 @@ import {MatOptionSelectionChange} from "@angular/material/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {StationService} from "../../../service/station.service";
 import {NotificationService} from "../../../service/notification.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MapComponent} from "./map/map.component";
+import {TrainInfoService} from "../../../service/train-info.service";
 
 @Component({
   selector: 'app-addstation',
@@ -27,6 +30,8 @@ export class AddstationComponent implements OnInit {
   canGetStations: String[] = [];
   visibilityStation: boolean = false;
   addStCan: boolean = false;
+  lonCreate: number = 0;
+  latCreate: number = 0;
 
 
   public stations: Station[];
@@ -36,13 +41,44 @@ export class AddstationComponent implements OnInit {
   constructor(public adminService: AdminService,
               public stationService: StationService,
               private fb: FormBuilder,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private dialog: MatDialog,
+              public trainInfoService: TrainInfoService) {
   }
 
   ngOnInit(): void {
     this.getStations();
     this.requestAddStation = this.createAddStationForm();
     this.visibilityStation = false;
+  }
+
+  openMap() {
+    const dialogRef = new MatDialogConfig();
+    dialogRef.data = {lat: this.latEdit.value, lng: this.lonEdit.value};
+    this.dialog.open(MapComponent, dialogRef).afterClosed().subscribe(
+      data => {
+        this.latEdit.setValue(data.lat);
+        this.lonEdit.setValue(data.lng);
+
+      }
+    );
+  }
+
+  openMapCreate() {
+    const dialogRef = new MatDialogConfig();
+    dialogRef.data = {lat: 55.650534, lng: 37.633470};
+    this.dialog.open(MapComponent, dialogRef).afterClosed().subscribe(
+      data => {
+        let name = this.requestAddStation.value.nameStation;
+        this.requestAddStation = this.fb.group({
+          nameStation: [name, Validators.compose([Validators.required])],
+          latitude: [data.lat  , Validators.compose([Validators.required])],
+          longitude: [data.lng , Validators.compose([Validators.required])]
+        });
+      }
+    );
+    // this.requestAddStation.value.latitude=this.latCreate;
+    // this.requestAddStation.value.longitude=this.latCreate;
   }
 
   createAddStationForm(): FormGroup {
@@ -54,22 +90,17 @@ export class AddstationComponent implements OnInit {
   }
 
   getStations(): void {
-    console.log("entry")
     this.stationService.getStations().subscribe(data => {
-      this.stations=data;
+      this.stations = data;
       this.stationsForEdite = data;
       this.stationsForAddCanGet = data;
-      console.log('stations', data);
     });
 
   }
 
   addCanGet() {
-    console.log('onclik', this.addCanGetStation);
     if (this.addCanGetStation != '') {
       this.canGetStations.push(this.addCanGetStation);
-      console.log(this.addCanGetStation);
-      console.log(this.canGetStations);
       this.stations = this.stations.filter((s) => {
         return s.nameStation != this.addCanGetStation
       })
@@ -78,9 +109,7 @@ export class AddstationComponent implements OnInit {
   }
 
   onInput(event: MatOptionSelectionChange) {
-    console.log('event', event);
     this.addCanGetStation = event.source.value;
-    console.log('ghj,f', this.addCanGetStation);
   }
 
   addStation() {
@@ -100,9 +129,6 @@ export class AddstationComponent implements OnInit {
     this.canGetStations = [];
   }
 
-  gg() {
-
-  }
 
   onInputStation(event: any) {
     this.stationService.getSearchStations(event.target.value).subscribe(data => {
@@ -111,31 +137,23 @@ export class AddstationComponent implements OnInit {
   }
 
   edit() {
-
-    console.log('1')
     this.stationService.getStation(this.myControl.value).subscribe(data => {
       this.stationForEdit = data;
-      console.log(this.stationForEdit)
       this.nameStationEdit.setValue(this.stationForEdit.nameStation);
+      // this.trainInfoService.latForEdit=this.stationForEdit.latitude;
+      // this.trainInfoService.lonForEdit=this.stationForEdit.longitude;
+
       this.latEdit.setValue(this.stationForEdit.latitude);
       this.lonEdit.setValue(this.stationForEdit.longitude);
       this.visibilityStation = true;
-
     }, error => {
       this.notificationService.showSnakBar("Not found station with name " + this.myControl.value);
     })
 
   }
 
-  getFromMap() {
-
-  }
-
   deleteStationFromCanGetStation(i: number) {
-    console.log(i)
-    console.log(this.stationForEdit.canGetStation);
     this.stationForEdit.canGetStation.splice(i, 1);
-    console.log(this.stationForEdit.canGetStation);
   }
 
   addCanGetEdit() {
@@ -161,19 +179,18 @@ export class AddstationComponent implements OnInit {
   }
 
   saveChange() {
-   this.stationForEdit.nameStation=this.nameStationEdit.value;
-   this.stationForEdit.latitude=this.latEdit.value;
-   this.stationForEdit.longitude=this.lonEdit.value;
-   console.log('станция на отправку',this.stationForEdit);
-   this.adminService.stationEdit(this.stationForEdit).subscribe(
-     data=>{
-       console.log('измененная станция', data);
-     }, error => {
-       this.notificationService.showSnakBar(error);
-       this.notificationService.showSnakBar('что-то пошло не так');
-     }
-   )
-
+    this.stationForEdit.nameStation = this.nameStationEdit.value;
+    console.log(this.latEdit.value)
+    this.stationForEdit.latitude = this.trainInfoService.latForEdit;
+    console.log(this.lonEdit.value)
+    this.stationForEdit.longitude = this.trainInfoService.lonForEdit;
+    this.adminService.stationEdit(this.stationForEdit).subscribe(
+      data => {
+      }, error => {
+        this.notificationService.showSnakBar(error);
+        this.notificationService.showSnakBar('что-то пошло не так');
+      }
+    )
 
 
   }

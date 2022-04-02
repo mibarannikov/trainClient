@@ -35,17 +35,12 @@ export class NavigationComponent implements OnInit {
     }, 1000);
 
     this.d= new Date(this.date);
-
     this.isLoggedIn = !!this.tokenService.getToken();
-
     if (this.isLoggedIn) {
       this.user1=this.tokenService.getUser();
       this.userService.getCurrentUser().subscribe(data => {
         this.user = data;
-        console.log('Current user', data)
-        console.log('Current user', this.user)
         this.isDataLoaded = true;
-        console.log('isDataLoaded ', this.isDataLoaded)
       })
     }
 
@@ -57,19 +52,19 @@ export class NavigationComponent implements OnInit {
     this.router.navigate(['/main'])
   }
 
-  setAdminRole(): void {
-
-    this.userService.getCurrentUser().subscribe(data => {
-      console.log('Role', data.role)
-      if (data.role.includes('ROLE_ADMIN')) {
-        console.log("IF")
-        this.trainInfo.adminRole = true;
-        console.log('roleAdmin', this.trainInfo.adminRole)
-      } else {
-        this.trainInfo.adminRole = false
-        console.log('roleAdmin', this.trainInfo.adminRole)
-      }
-    });
-
-  }
+  // setAdminRole(): void {
+  //
+  //   this.userService.getCurrentUser().subscribe(data => {
+  //     console.log('Role', data.role)
+  //     if (data.role.includes('ROLE_ADMIN')) {
+  //       console.log("IF")
+  //       this.trainInfo.adminRole = true;
+  //       console.log('roleAdmin', this.trainInfo.adminRole)
+  //     } else {
+  //       this.trainInfo.adminRole = false
+  //       console.log('roleAdmin', this.trainInfo.adminRole)
+  //     }
+  //   });
+  //
+  // }
 }

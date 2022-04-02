@@ -76,8 +76,8 @@ export class BuyTicketComponent implements OnInit {
     this.ticketService.buyTicket({
         wagonNumber: this.trainInfo.wagonNumberForByTicket,
         seatNumber: this.changeSeat,
-        firstnamePassenger: this.buyTicket.value.firstname,
-        lastnamePassenger: this.buyTicket.value.lastname,
+        firstnamePassenger: this.buyTicket.value.firstname.trim(),
+        lastnamePassenger: this.buyTicket.value.lastname.trim(),
         dateOfBirth: d,
         numberTrainOwner: this.trainInfo.trainForTicket.trainNumber,
         nameStations: this.ticketPoints

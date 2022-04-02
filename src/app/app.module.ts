@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from "./material-module";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientJsonpModule, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {authInterceptorProviders} from "./helper/auth-interceptor.service";
 import {LoginComponent} from './auth/login/login.component';
@@ -40,6 +40,10 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {authErrorInterceptorProvider} from "./helper/error-interceptor.service";
 import { WagonSelectionComponent } from './layout/ticket/wagon-selection/wagon-selection.component';
 import { EditTrainComponent } from './layout/admin/show-trains/edit-train/edit-train.component';
+import { MapComponent } from './layout/admin/addstation/map/map.component';
+import {GoogleMapsModule} from "@angular/google-maps";
+import {CommonModule} from "@angular/common";
+import { TrainTransferComponent } from './layout/index/train-transfer/train-transfer.component';
 
 
 @NgModule({
@@ -57,6 +61,9 @@ import { EditTrainComponent } from './layout/admin/show-trains/edit-train/edit-t
     ShowPassengersComponent,
     WagonSelectionComponent,
     EditTrainComponent,
+    MapComponent,
+    TrainTransferComponent,
+
   ],
     imports: [
         BrowserModule,
@@ -81,7 +88,14 @@ import { EditTrainComponent } from './layout/admin/show-trains/edit-train/edit-t
         MatRadioModule,
         MatPaginatorModule,
         MatTabsModule,
-        MatGridListModule
+        MatGridListModule,
+        GoogleMapsModule,
+      BrowserModule,
+      AppRoutingModule,
+      CommonModule,
+      GoogleMapsModule,
+      HttpClientModule,
+      HttpClientJsonpModule,
 
 
     ],

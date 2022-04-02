@@ -9,6 +9,7 @@ import {TrainInfoService} from "../../service/train-info.service";
 import {Observable} from "rxjs";
 import {StationService} from "../../service/station.service";
 import {PointOfSchedule} from "../../models/pointOfSchedule";
+import {Transfer} from "../../models/transfer";
 
 @Component({
   selector: 'app-index',
@@ -43,6 +44,8 @@ export class IndexComponent implements OnInit {
   isPassengerDataLoaded = false;
   passenger!: Passenger;
   requestTrain!: FormGroup;
+  transfers:Transfer[]= [];
+  vis: boolean =false;
 
   constructor(private trainService: TrainService,
               private notificationService: NotificationService,
@@ -114,16 +117,12 @@ export class IndexComponent implements OnInit {
   giveTrains() {
     this.start = this.myControl.value
     this.end = this.myControl1.value
+    console.log('--------------',this.dateStartControl.value)
     this.trainService.searchTrains(this.myControl.value, this.myControl1.value, this.dateStartControl.value, this.dateEndControl.value)
       .subscribe(data => {
         this.trains = data;
         console.log('trains',data);
-        // for (let t of this.trains) {
-        //   console.log('befor', t.pointsOfSchedule);
-        //   t.pointsOfSchedule.sort((a, b) => a.arrivalTime > b.arrivalTime ? 1 : -1);
-        //   console.log('after', t.pointsOfSchedule);
-        // }
-      })
+      });
   }
 
   gg() {
@@ -228,5 +227,17 @@ export class IndexComponent implements OnInit {
     this.myControl1.setValue(a);
     this.giveTrains();
 
+  }
+
+  giveTrainsWithTransfer() {
+    this.start = this.myControl.value
+    this.end = this.myControl1.value
+
+    this.trainService.searchTrainsTransfer(this.myControl.value, this.myControl1.value, this.dateStartControl.value, this.dateEndControl.value)
+      .subscribe(data => {
+        this.transfers = data;
+        console.log('transfers',data);
+        this.vis=true;
+      })
   }
 }

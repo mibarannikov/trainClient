@@ -138,6 +138,16 @@ export class AddTrainComponent implements OnInit {
       this.train.departureTime = this.addArrivalTime;
     }
 
+    if(this.train.pointsOfSchedule.length==1){
+
+      let str = this.train.departureTime.split('T')[0];
+      let strArr = str.split('-');
+      str=strArr[0]+strArr[1]+strArr[2];
+      this.train.trainNumber=this.train.trainNumber*100000000+Number(str);
+      this.addTrainForm.value.trainNumber=this.train.trainNumber;
+      console.log('--------',this.train.trainNumber);
+    }
+
     if (this.addArrivalStationName != '') {
       this.train.pointsOfSchedule.push(
         {
@@ -155,7 +165,6 @@ export class AddTrainComponent implements OnInit {
   }
 
   createTrain() {
-    console.log('creating train', this.train.pointsOfSchedule)
     if (this.train.pointsOfSchedule.length > 0) {
       this.train.arrivalTimeEnd = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime;
       this.train.departureTime = this.train.pointsOfSchedule[0].arrivalTime;

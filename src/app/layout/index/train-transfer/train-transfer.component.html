@@ -1,0 +1,75 @@
+<div>
+
+<!--  <div style="display: inline">-->
+<!--    <h1>{{transfer.firstTrain.trainNumber}}</h1>-->
+<!--  </div>-->
+<!--  <div style="display: inline">-->
+<!--    <h1>{{transfer.secondTrain.trainNumber}}</h1>-->
+<!--  </div>-->
+<!--  <div style="display: inline">-->
+<!--    <h1>{{transfer.stationTransfer.nameStation}}</h1>-->
+
+<!--  </div>-->
+
+<!--  <mat-card style="margin-left:1rem; border: black solid; width: content-box; height: max-content;"-->
+<!--            appearance="outline">-->
+<!--    <h1>{{transfer.firstTrain.trainNumber}}</h1>-->
+
+<!--  </mat-card>-->
+<!--  <mat-card style="margin-left:1rem; border: black solid; width: content-box; height: max-content;"-->
+<!--            appearance="outline">-->
+<!--    <h1>{{transfer.secondTrain.trainNumber}}</h1>-->
+
+<!--  </mat-card>-->
+
+
+
+  <mat-card class="index-page" >
+    <mat-card-header style="text-align: center">
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Поезд №{{transfer.firstTrain.trainNumber}}</mat-card-title>
+      <hr class="post-card">
+<!--      <mat-card-subtitle>{{this.start}}</mat-card-subtitle>-->
+<!--      <mat-card-subtitle>{{this.end}}</mat-card-subtitle>-->
+      <mat-card-subtitle>Свободные места {{transfer.firstTrain.amountOfEmptySeats}}</mat-card-subtitle>
+    </mat-card-header>
+    <span appearance="none" *ngFor="let p of transfer.firstTrain.pointsOfSchedule">
+        <span>{{p.nameStation}} </span>
+            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</span>
+            <mat-icon style="transform: scale(0.80);vertical-align: middle;">{{p.delayed}}</mat-icon>
+            <span>--></span>
+      </span>
+
+    <mat-card-header style="text-align: center">
+    <h1 style="text-align: center">пересадка на станции {{transfer.stationTransfer.nameStation}}</h1>
+    </mat-card-header>
+
+    <mat-card-header style="text-align: center">
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Поезд №{{transfer.secondTrain.trainNumber}}</mat-card-title>
+      <hr class="post-card">
+      <!--      <mat-card-subtitle>{{this.start}}</mat-card-subtitle>-->
+      <!--      <mat-card-subtitle>{{this.end}}</mat-card-subtitle>-->
+      <mat-card-subtitle>Свободные места {{transfer.secondTrain.amountOfEmptySeats}}</mat-card-subtitle>
+    </mat-card-header>
+    <span appearance="none" *ngFor="let p of transfer.secondTrain.pointsOfSchedule">
+        <span>{{p.nameStation}} </span>
+            <span>{{p.arrivalTime | date:'dd.MM.yyyy HH:mm '}}</span>
+            <mat-icon style="transform: scale(0.80);vertical-align: middle;">{{p.delayed}}</mat-icon>
+            <span>--></span>
+      </span>
+
+    <mat-card-actions align="start">
+      <button *ngIf="true" mat-button class="not-liked" (click)="buyTicket(transfer.firstTrain.trainNumber.id)">
+        <!-- [disabled]="this.trainInfoService.dateNow>tr.pointsOfSchedule[0].arrivalTime"  -->
+        <mat-icon>
+          payment
+        </mat-icon>
+        Купить билет
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+
+
+</div>
