@@ -57,9 +57,10 @@ export class AddstationComponent implements OnInit {
     dialogRef.data = {lat: this.latEdit.value, lng: this.lonEdit.value};
     this.dialog.open(MapComponent, dialogRef).afterClosed().subscribe(
       data => {
+        if (data){
         this.latEdit.setValue(data.lat);
         this.lonEdit.setValue(data.lng);
-
+      }
       }
     );
   }
@@ -70,11 +71,12 @@ export class AddstationComponent implements OnInit {
     this.dialog.open(MapComponent, dialogRef).afterClosed().subscribe(
       data => {
         let name = this.requestAddStation.value.nameStation;
+        if (data){
         this.requestAddStation = this.fb.group({
           nameStation: [name, Validators.compose([Validators.required])],
-          latitude: [data.lat  , Validators.compose([Validators.required])],
-          longitude: [data.lng , Validators.compose([Validators.required])]
-        });
+          latitude: [data.lat, Validators.compose([Validators.required])],
+          longitude: [data.lng, Validators.compose([Validators.required])]
+        });}
       }
     );
     // this.requestAddStation.value.latitude=this.latCreate;
@@ -109,7 +111,9 @@ export class AddstationComponent implements OnInit {
   }
 
   onInput(event: MatOptionSelectionChange) {
-    this.addCanGetStation = event.source.value;
+    if (event.isUserInput) {
+      this.addCanGetStation = event.source.value;
+    }
   }
 
   addStation() {
@@ -119,9 +123,10 @@ export class AddstationComponent implements OnInit {
       longitude: this.requestAddStation.value.longitude,
       canGetStation: this.canGetStations
     }).subscribe(data => {
-      console.log(data);
+      console.log('new station',data);
       this.getStations();
     }, error => {
+      console.log(error)
       console.log("Станция с таким именем уже существует")
       this.notificationService.showSnakBar("Станция с таким названием уже существует");
     });
@@ -146,9 +151,11 @@ export class AddstationComponent implements OnInit {
       this.latEdit.setValue(this.stationForEdit.latitude);
       this.lonEdit.setValue(this.stationForEdit.longitude);
       this.visibilityStation = true;
-    }, error => {
+    }
+    , error => {
       this.notificationService.showSnakBar("Not found station with name " + this.myControl.value);
-    })
+    }
+    )
 
   }
 
@@ -181,14 +188,15 @@ export class AddstationComponent implements OnInit {
   saveChange() {
     this.stationForEdit.nameStation = this.nameStationEdit.value;
     console.log(this.latEdit.value)
-    this.stationForEdit.latitude = this.trainInfoService.latForEdit;
+    this.stationForEdit.latitude = this.latEdit.value;
     console.log(this.lonEdit.value)
-    this.stationForEdit.longitude = this.trainInfoService.lonForEdit;
+    this.stationForEdit.longitude = this.lonEdit.value;
     this.adminService.stationEdit(this.stationForEdit).subscribe(
       data => {
       }, error => {
-        this.notificationService.showSnakBar(error);
-        this.notificationService.showSnakBar('что-то пошло не так');
+        console.log(error)
+        //this.notificationService.showSnakBar(error.message());
+        this.notificationService.showSnakBar('что-то пошло не так' + error.message);
       }
     )
 

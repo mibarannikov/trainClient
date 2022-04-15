@@ -4,9 +4,10 @@ import {HttpClient} from "@angular/common/http";
 import {Station} from "../models/station";
 import {Train} from "../models/train";
 import {Ticket} from "../models/tiсket";
+import {environment} from "../../environments/environment";
 
 
-const ADMIN_API = 'http://localhost:8080/api/admin/'
+const ADMIN_API = environment.apiUrl+'/api/admin/'
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +35,10 @@ export class AdminService {
   }
 
 
-  getAllTrains(param:string): Observable<any> {
-    return this.http.get(ADMIN_API + 'train/all?param='+param);
+  getAllTrains(param:string, page:number, amount:number): Observable<any> {
+    return this.http.get(ADMIN_API + 'train/all?param='+param+'&page='+page+'&amount='+amount);
   }
+
 
   getRegTickets(trainNumber: number) {
     return this.http.get<Ticket[]>(ADMIN_API + 'regtickets?train=' + trainNumber);
@@ -46,9 +48,9 @@ export class AdminService {
     return this.http.get<Ticket[]>(ADMIN_API + 'alltickets?train=' + trainNumber);
   }
 
-  getAllActTrains(): Observable<any> {
-    return this.http.get(ADMIN_API + 'train/allact');
-  }
+   getAllActTrains(): Observable<any> {
+     return this.http.get(ADMIN_API + 'train/allact');
+   }
 
   findTrain(trainNumber:number) :Observable<any>{
     return this.http.get(ADMIN_API+'train/find?trainNumber='+trainNumber);

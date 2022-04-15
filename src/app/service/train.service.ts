@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
-const TRAIN_API = 'http://localhost:8080/api/train/'
+const TRAIN_API = environment.apiUrl+'/api/train/'
 
 @Injectable({
   providedIn: 'root'

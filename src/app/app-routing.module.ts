@@ -13,6 +13,7 @@ import {ShowTrainsComponent} from "./layout/admin/show-trains/show-trains.compon
 import {ShowPassengersComponent} from "./layout/admin/show-passengers/show-passengers.component";
 import {WagonSelectionComponent} from "./layout/ticket/wagon-selection/wagon-selection.component";
 import {EditTrainComponent} from "./layout/admin/show-trains/edit-train/edit-train.component";
+import {WagonsTransferComponent} from "./layout/transfer/wagons-transfer/wagons-transfer.component";
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path:'trains', component:ShowTrainsComponent, canActivate:[AuthAdminGuardService]},
   {path:'edittrain', component:EditTrainComponent, canActivate:[AuthAdminGuardService]},
   {path:'passengers', component:ShowPassengersComponent, canActivate:[AuthAdminGuardService]},
+  {path:'wagontransfer', component:WagonsTransferComponent, canActivate:[AuthAdminGuardService]},
   {path:'',redirectTo: 'main', pathMatch:'full'}
 ];
 

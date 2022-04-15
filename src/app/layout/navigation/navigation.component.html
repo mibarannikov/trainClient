@@ -25,7 +25,7 @@
 
   </mat-menu>
 
-  <button *ngIf="(isLoggedIn)&&(this.user1.role.includes('ROLE_ADMIN'))" [matMenuTriggerFor]="menu2" matTooltip="Profile" mat-icon-button>
+  <button *ngIf="(isLoggedIn)&&(this.user.role.includes('ROLE_ADMIN'))&&(isDataLoaded)" [matMenuTriggerFor]="menu2" matTooltip="Profile" mat-icon-button>
     <mat-icon>settings</mat-icon>
   </button>
 

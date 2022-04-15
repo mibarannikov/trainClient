@@ -16,11 +16,11 @@ export class ErrorInterceptorService implements HttpInterceptor{
     return next.handle(req).pipe(catchError(err=> {
       if(err.status===401){
         this.tokenService.logOut();
-       // window.location.reload();
+        //window.location.reload();
       }
-
+      console.log('error message',err.error.message)
       const error = err.error.message || err.statusText;
-     // this.notificationService.showSnakBar(error);
+      this.notificationService.showSnakBar(error);
       return throwError(error)
     }));
 

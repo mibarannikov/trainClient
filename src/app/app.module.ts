@@ -44,6 +44,8 @@ import { MapComponent } from './layout/admin/addstation/map/map.component';
 import {GoogleMapsModule} from "@angular/google-maps";
 import {CommonModule} from "@angular/common";
 import { TrainTransferComponent } from './layout/index/train-transfer/train-transfer.component';
+import { WagonsTransferComponent } from './layout/transfer/wagons-transfer/wagons-transfer.component';
+import { TicketsTransferComponent } from './layout/transfer/tickets-transfer/tickets-transfer.component';
 
 
 @NgModule({
@@ -63,6 +65,8 @@ import { TrainTransferComponent } from './layout/index/train-transfer/train-tran
     EditTrainComponent,
     MapComponent,
     TrainTransferComponent,
+    WagonsTransferComponent,
+    TicketsTransferComponent,
 
   ],
     imports: [

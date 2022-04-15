@@ -7,6 +7,7 @@
       [position]="markerPosition"
       [options]="markerOptions">
     </map-marker>
+    <map-polyline *ngFor="let v of arr;let i=index" [path]="v"></map-polyline>
   </google-map>
 </div>
 <div>

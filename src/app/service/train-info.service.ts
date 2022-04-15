@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Train} from "../models/train";
+import {Transfer} from "../models/transfer";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,6 @@ import {Train} from "../models/train";
 export class TrainInfoService {
 
   public trainIdForByTicket: number;
-  public adminRole: boolean;
   public trainForTicket: Train;
   public startForTicket: string;
   public endForTicket: string;
@@ -17,6 +17,7 @@ export class TrainInfoService {
   public latForEdit:number;
   public lonForEdit:number;
   public trainForShowPassenger:Train;
+  public transferForBuyTicket: Transfer;
 
 
   constructor() {

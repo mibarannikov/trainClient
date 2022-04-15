@@ -5,4 +5,6 @@ export interface Transfer {
   firstTrain: Train;
   secondTrain: Train;
   stationTransfer: Station;
+  wagonFirst:number;
+  wagonSecond:number;
 }

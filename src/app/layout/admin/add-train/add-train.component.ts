@@ -92,35 +92,42 @@ export class AddTrainComponent implements OnInit {
 
   }
 
+  // MatOptionSelectionChange<String>
+
   setArrivalStation(event: MatOptionSelectionChange<String>) {
-    this.addArrivalStationName = event.source.value;
-    if (this.train.pointsOfSchedule.length > 0) {
-      let nameOld = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].nameStation;
-      let stationOld: Station;
-      let stationNew: Station;
-      this.stationService.getStation(nameOld).subscribe(data => {
-        stationOld = data;
-        this.stationService.getStation(event.source.value).subscribe(data => {
-          stationNew = data;
-          let dateOld = new Date(this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime);
-          let distance = Math.sqrt((stationNew.latitude - stationOld.latitude) ** 2 + (stationNew.longitude - stationOld.longitude) ** 2) * 1000;
-          let stNewLatRad = stationNew.latitude * 3.14 / 180;
-          let stOldLatRad = stationOld.latitude * 3.14 / 180;
-          let deltaLonRad = (stationNew.longitude - stationOld.longitude) * 3.14 / 180;
-          let distReal = 2 * Math.asin(Math.sqrt(Math.sin((stNewLatRad - stOldLatRad) / 2) ** 2 + Math.cos(stOldLatRad) * Math.cos(stNewLatRad) * Math.sin(deltaLonRad / 2) ** 2));
-          distReal = distReal * 6372795;
-          console.log('real ', distReal);
-          let v = this.train.trainSpeed * 0.2777;
-          let time = distReal / v;
-          console.log('date for next point', dateOld.setUTCSeconds(dateOld.getUTCSeconds() + time));
-          console.log('date for next point', dateOld.setHours(dateOld.getHours() + 3));
-          this.addArrivalTime = dateOld.toISOString().replace('Z', '');
-          dateOld.setMinutes(dateOld.getMinutes() + 5);
-          this.addDepartureTime = dateOld.toISOString().replace('Z', '');
-          console.log(this.addArrivalTime);
-          console.log(this.addDepartureTime);
+    if (event.isUserInput) {
+      console.log('event', event.source.value)
+      this.addArrivalStationName = event.source.value;
+      console.log('-----', this.addArrivalStationName)
+      if (this.train.pointsOfSchedule.length > 0) {
+        console.log('------')
+        let nameOld = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].nameStation;
+        let stationOld: Station;
+        let stationNew: Station;
+        this.stationService.getStation(nameOld).subscribe(data => {
+          stationOld = data;
+          this.stationService.getStation(event.source.value).subscribe(data => {
+            stationNew = data;
+            let dateOld = new Date(this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime);
+            let distance = Math.sqrt((stationNew.latitude - stationOld.latitude) ** 2 + (stationNew.longitude - stationOld.longitude) ** 2) * 1000;
+            let stNewLatRad = stationNew.latitude * 3.14 / 180;
+            let stOldLatRad = stationOld.latitude * 3.14 / 180;
+            let deltaLonRad = (stationNew.longitude - stationOld.longitude) * 3.14 / 180;
+            let distReal = 2 * Math.asin(Math.sqrt(Math.sin((stNewLatRad - stOldLatRad) / 2) ** 2 + Math.cos(stOldLatRad) * Math.cos(stNewLatRad) * Math.sin(deltaLonRad / 2) ** 2));
+            distReal = distReal * 6372795;
+            console.log('real ', distReal);
+            let v = this.train.trainSpeed * 0.2777;
+            let time = distReal / v;
+            console.log('date for next point', dateOld.setUTCSeconds(dateOld.getUTCSeconds() + time));
+            console.log('date for next point', dateOld.setHours(dateOld.getHours() + 3));
+            this.addArrivalTime = dateOld.toISOString().replace('Z', '');
+            dateOld.setMinutes(dateOld.getMinutes() + 5);
+            this.addDepartureTime = dateOld.toISOString().replace('Z', '');
+            console.log(this.addArrivalTime);
+            console.log(this.addDepartureTime);
+          });
         });
-      });
+      }
     }
   }
 
@@ -138,14 +145,15 @@ export class AddTrainComponent implements OnInit {
       this.train.departureTime = this.addArrivalTime;
     }
 
-    if(this.train.pointsOfSchedule.length==1){
+    if (this.train.pointsOfSchedule.length == 1) {
 
       let str = this.train.departureTime.split('T')[0];
       let strArr = str.split('-');
-      str=strArr[0]+strArr[1]+strArr[2];
-      this.train.trainNumber=this.train.trainNumber*100000000+Number(str);
-      this.addTrainForm.value.trainNumber=this.train.trainNumber;
-      console.log('--------',this.train.trainNumber);
+      str = strArr[0] + strArr[1] + strArr[2];
+      this.train.trainNumber = this.train.trainNumber * 100000000 + Number(str);
+      this.addTrainForm.value.trainNumber = this.train.trainNumber;
+      console.log('--------', this.train.trainNumber);
+
     }
 
     if (this.addArrivalStationName != '') {
@@ -169,12 +177,18 @@ export class AddTrainComponent implements OnInit {
       this.train.arrivalTimeEnd = this.train.pointsOfSchedule[this.train.pointsOfSchedule.length - 1].arrivalTime;
       this.train.departureTime = this.train.pointsOfSchedule[0].arrivalTime;
     }
+    for (let i = 0; i < this.train.wagons.length; i++) {
+      this.train.wagons[i].trainNumber=this.train.trainNumber;
+    }
+    console.log('train',this.train)
     this.adminService.addTrain(this.train).subscribe(data => {
       console.log('created train', data)
-    }, error => {
-
-      this.notificationService.showSnakBar("Поезд с номером " + this.train.trainNumber + " уже существует");
-    });
+    }
+    // , error => {
+    //
+    //   this.notificationService.showSnakBar("Поезд с номером " + this.train.trainNumber + " уже существует");
+    // }
+    );
     this.addTrainForm.reset();
     this.setTrainNumberFlag = false;
   }
@@ -183,8 +197,8 @@ export class AddTrainComponent implements OnInit {
     this.setTrainNumberFlag = false;
     this.addTrainForm.reset();
     this.train.pointsOfSchedule = [];
-    this.train.wagons=[];
-    this.train.sumSeats=0;
+    this.train.wagons = [];
+    this.train.sumSeats = 0;
   }
 
 
@@ -198,7 +212,7 @@ export class AddTrainComponent implements OnInit {
 
   deleteWagon(i: number) {
 
-    this.train.sumSeats-=this.train.wagons[i].sumSeats;
+    this.train.sumSeats -= this.train.wagons[i].sumSeats;
     this.train.wagons.splice(i, 1);
 
   }
@@ -236,12 +250,14 @@ export class AddTrainComponent implements OnInit {
           }
         }
 
-        this.train.wagons.push({wagonNumber:this.train.wagons.length+1,
+        this.train.wagons.push({
+          wagonNumber: this.train.wagons.length + 1,
           type: type,
           name: this.addWag,
           sumSeats: sumSeat,
-          trainNumber:this.train.trainNumber});
-        this.train.sumSeats+=sumSeat;
+          trainNumber: this.train.trainNumber
+        });
+        this.train.sumSeats += sumSeat;
       }
     }
     console.log(this.train)

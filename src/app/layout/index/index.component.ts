@@ -115,6 +115,8 @@ export class IndexComponent implements OnInit {
 
 
   giveTrains() {
+this.vis=false
+    this.transfers=[];
     this.start = this.myControl.value
     this.end = this.myControl1.value
     console.log('--------------',this.dateStartControl.value)

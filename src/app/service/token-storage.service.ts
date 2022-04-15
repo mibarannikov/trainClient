@@ -31,8 +31,9 @@ export class TokenStorageService {
 
   logOut(): void{
     window.sessionStorage.clear();
-    if(sessionStorage.getItem(TOKEN_KEY) == null){
-    window.location.reload();}
+    // if(sessionStorage.getItem(TOKEN_KEY) != null){
+    window.location.reload();
+  // }
 
 
   }

@@ -86,10 +86,10 @@ export class BuyTicketComponent implements OnInit {
       console.log(data)
       this.tik = data;
       if (this.tik.id == 0) {
-        this.notificationService.showSnakBar('Пассажир уже зарегистрирован');
+        //this.notificationService.showSnakBar('Пассажир уже зарегистрирован');
       }
       if (this.tik.nameStations[0].nameStation == 'station whose name is oblivion') {
-        this.notificationService.showSnakBar('посадка на поезд окончена');
+        //this.notificationService.showSnakBar('посадка на поезд окончена');
       }
       this.ticketService.getEmptySeatsTrain(this.trainInfo.trainForTicket.trainNumber,
         this.trainInfo.wagonNumberForByTicket,

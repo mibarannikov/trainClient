@@ -87,7 +87,7 @@
       </div>
       <ng-template style="text-align: center" #empty>
         <h1 style="text-align: center">Прямого сообщения нет</h1>
-        <div style="text-align: center">
+        <div *ngIf="!vis" style="text-align: center">
           <button style="width:content-box" mat-flat-button color="primary" (click)="giveTrainsWithTransfer()"
                   [disabled]="myControl.invalid || myControl1.invalid||dateStartControl.invalid||dateEndControl.invalid">
             Искать с пересадкой
@@ -96,10 +96,10 @@
         <div *ngIf="vis">
           <app-train-transfer
             *ngFor="let trans of transfers"
-            [transfer]="trans">
-
+            [transfer]="trans"
+            [start]="this.start"
+            [end]="this.end">
           </app-train-transfer>
-
         </div>
 
 

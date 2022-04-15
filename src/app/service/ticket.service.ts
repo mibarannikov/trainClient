@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Ticket} from "../models/tiсket";
+import {environment} from "../../environments/environment";
 
-const TICKET_API = 'http://localhost:8080/api/ticket/'
+const TICKET_API = environment.apiUrl+'/api/ticket/'
 @Injectable({
   providedIn: 'root'
 })

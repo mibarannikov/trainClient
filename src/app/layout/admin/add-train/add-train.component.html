@@ -99,7 +99,8 @@
       <mat-label> Cтанция</mat-label>
       <mat-select>
         <mat-option *ngFor="let st of this.stationsName;let i = index" [value]="st"
-                    (onSelectionChange)="setArrivalStation($event)">
+                    (onSelectionChange)="setArrivalStation($event)"
+        >
           {{st}}
         </mat-option>
       </mat-select>

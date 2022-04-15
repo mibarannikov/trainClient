@@ -28,11 +28,12 @@ export class ShowPassengersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adminService.getAllTrains('all').subscribe(data => {
+    this.adminService.getAllActTrains().subscribe(data => {
       this.options = data;
     });
     if (this.trainInfoService.trainForShowPassenger){
-
+      this.myControl.setValue(this.trainInfoService.trainForShowPassenger.trainNumber);
+      this.giveTickets();
     }
   }
 
@@ -55,42 +56,35 @@ export class ShowPassengersComponent implements OnInit {
   }
 
   giveTickets() {
-    let tr = this.options.find(train =>
-      train.trainNumber == this.myControl.value
-    );
-    console.log('fiind',tr)
-    if (tr) {
-      this.train = tr;
-      console.log(this.train)
-
-    }
-
+    this.adminService.getAllActTrains().subscribe(data => {
+      this.options = data;
+      let tr = this.options.find(train =>
+        train.trainNumber == this.myControl.value
+      );
+      if (tr) {
+        this.train = tr;
+      }
+    });
     this.adminService.getRegTickets(this.myControl.value).subscribe(data => {
       this.ticketsReg = data
     });
     this.adminService.getAllTickets(this.myControl.value).subscribe(data=>{
       this.ticketsAll = data;
       console.log(data)
-    })
-
+    });
   }
 
   gg() {
-    //this.st=this.myControl2.value;
-    console.log('reg', this.label);
     if (this.label == 1) {
       this.label = 0;
       this.adminService.getRegTickets(this.myControl.value).subscribe(data => {
         this.ticketsReg = data});
     } else {
-      console.log('all');
       this.adminService.getAllTickets(this.myControl.value).subscribe(data=>{
         this.ticketsAll = data;
         console.log(data)
       })
-
       this.label = 1;
     }
-
   }
 }

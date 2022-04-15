@@ -48,17 +48,20 @@ export class LoginComponent implements OnInit {
       username: this.loginForm.value.username,
       password: this.loginForm.value.password
     }).subscribe(data => {
+      console.log('submit',data)
       this.tokenStorage.saveToken(data.token);
       //this.tokenStorage.saveUser(data);
       this.notificationService.showSnakBar('Successfully logged in');
       this.userService.getCurrentUser().subscribe(data => {
         this.tokenStorage.saveUser(data);
+        console.log('user submit', this.tokenStorage.getUser())
+        window.location.reload();
       });
       this.router.navigate(['/']);
-      window.location.reload();
+
     }, error => {
       console.log(error);
-      this.notificationService.showSnakBar(error.error.password+' '+error.error.username);
+      this.notificationService.showSnakBar(error.error.password + ' ' + error.error.username);
     });
 
 

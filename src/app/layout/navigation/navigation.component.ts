@@ -35,12 +35,21 @@ export class NavigationComponent implements OnInit {
     }, 1000);
 
     this.d= new Date(this.date);
+    console.log('------------',!!this.tokenService.getToken())
+    //this.user1 = this.tokenService.getUser();
+
     this.isLoggedIn = !!this.tokenService.getToken();
     if (this.isLoggedIn) {
+      this.isLoggedIn=false;
       this.user1=this.tokenService.getUser();
+      console.log('user1',this.user1)
       this.userService.getCurrentUser().subscribe(data => {
+
+        console.log('user',data)
+
         this.user = data;
         this.isDataLoaded = true;
+        this.isLoggedIn=true;
       })
     }
 
